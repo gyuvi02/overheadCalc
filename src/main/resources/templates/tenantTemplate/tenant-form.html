@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <
+<!--    <title th:if="${tenant.id == null}">Add new tenant</title>-->
+    <title th:text="${tenant.lastName == null} ? 'Add new tenant' : 'Update the tenant data'"></title>
+
+    <link rel="stylesheet" th:href="@{/css/strap.css}">
+</head>
+<body>
+    <div class="container">
+        <hr>
+        <h4 th:text="${tenant.lastName == null} ? 'Add new tenant' : 'Update the tenant data'" class="h4 mb-4"></h4>
+
+        <form action="#"    th:action="@{/tenants/saveTenant}"
+                            th:object="${tenant}" method="post">
+            <!-- add hidden form field to handle update -->
+            <input type="hidden" th:field="*{id}"/>
+            <input type="text" th:field="*{firstName}" class="form-control mb-4 col-4" placeholder="First name">
+            <input type="text" th:field="*{lastName}" class="form-control mb-4 col-4" placeholder="Last name">
+            <input type="text" th:field="*{email}" class="form-control mb-4 col-4" placeholder="Email address">
+            <input type="text" th:field="*{phone}" class="form-control mb-4 col-4" placeholder="Phone number">
+
+            <button type="submit" class="btn btn-info col-2">Save</button>
+        </form>
+
+        <hr>
+        <a th:href="@{/tenants/tenantList}">Back to the tenant list</a>
+
+    </div>
+
+</body>
+</html>

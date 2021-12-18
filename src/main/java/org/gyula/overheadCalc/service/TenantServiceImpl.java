@@ -1,44 +1,57 @@
 package org.gyula.overheadCalc.service;
 
-import org.gyula.overheadCalc.dao.TenantDAO;
+import org.gyula.overheadCalc.dao.TenantRepository;
 import org.gyula.overheadCalc.entity.A_tenant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TenantServiceImpl implements TenantService{
 
-    private TenantDAO tenantDAO;
+//    private TenantDAO tenantDAO;
+//
+//    @Autowired
+//    public TenantServiceImpl(TenantDAO theTenantDAO) {
+//        tenantDAO = theTenantDAO;
+//    }
+    TenantRepository tenantRepository;
 
     @Autowired
-    public TenantServiceImpl(TenantDAO theTenantDAO) {
-        tenantDAO = theTenantDAO;
+    public TenantServiceImpl(TenantRepository tenantRepository) {
+        this.tenantRepository = tenantRepository;
     }
 
     @Override
-    @Transactional
     public List<A_tenant> findAll() {
-        return tenantDAO.findAll();
+        return tenantRepository.findAllByOrderByLastNameAsc();
     }
 
     @Override
-    @Transactional
     public A_tenant findById(int id) {
-        return tenantDAO.findById(id);
+        Optional<A_tenant> result = tenantRepository.findById(id);
+
+        A_tenant a_tenant = null;
+
+        if (result.isPresent()) {
+            a_tenant = result.get();
+        }
+        else {
+            // we didn't find the tenant
+            throw new RuntimeException("Did not find tenant id - " + id);
+        }
+        return a_tenant;
     }
 
     @Override
-    @Transactional
     public void save(A_tenant theTenant) {
-        tenantDAO.save(theTenant);
+        tenantRepository.save(theTenant);
     }
 
     @Override
-    @Transactional
     public void deleteById(int id) {
-        tenantDAO.deleteById(id);
+        tenantRepository.deleteById(id);
     }
 }
