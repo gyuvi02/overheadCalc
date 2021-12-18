@@ -26,7 +26,7 @@ public class TenantServiceImpl implements TenantService{
 
     @Override
     public List<A_tenant> findAll() {
-        return tenantRepository.findAll();
+        return tenantRepository.findAllByOrderByLastNameAsc();
     }
 
     @Override

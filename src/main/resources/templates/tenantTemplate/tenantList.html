@@ -13,7 +13,12 @@
 </head>
 <body>
 <div class="container">
-    <p th:text="'The list of the tenants comes here'" class="funny"></p>
+    <h4 th:text="'The list of all tenants'" class="text-decoration-underline text-center"></h4>
+
+    <!-- Adding a button -->
+    <a th:href="@{/tenants/addTenant}" class="btn btn-primary btn-sm mb-3">
+        Add tenant
+    </a>
 
     <hr>
 
@@ -32,6 +37,19 @@
                 <td th:text="${tempTenant.getLastName()}"></td>
                 <td th:text="${tempTenant.getEmail()}"></td>
                 <td th:text="${tempTenant.getPhone()}"></td>
+                <td>
+                    <a th:href="@{/tenants/tenantUpdate (tenantId=${tempTenant.id})}"
+                       class="btn btn-info btn-sm">
+                        Update
+                    </a>
+                </td>
+                <td>
+                    <a th:href="@{/tenants/tenantDelete (tenantId=${tempTenant.id})}"
+                       class="btn btn-danger btn-sm"
+                        th:onclick="if (!(confirm('Are you sure you want to delete tenant [(${tempTenant.lastName})] [(${tempTenant.firstName})]?'))) return false">
+                        Delete
+                    </a>
+                </td>
             </tr>
         </tbody>
     </table>

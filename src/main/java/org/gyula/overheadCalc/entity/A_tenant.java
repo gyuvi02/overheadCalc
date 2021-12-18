@@ -1,7 +1,5 @@
 package org.gyula.overheadCalc.entity;
 
-import org.hibernate.annotations.Target;
-
 import javax.persistence.*;
 
 @Entity
