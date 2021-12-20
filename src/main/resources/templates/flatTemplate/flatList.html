@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Flat list</title>
+
+    <!-- Reference CSS file -->
+    <link rel="stylesheet" th:href="@{/css/strap.css}">
+
+</head>
+<body>
+<div class="container">
+    <h4 th:text="'The list of all flats'" class="text-decoration-underline text-center"></h4>
+
+    <!-- Adding a button -->
+    <a th:href="@{/flats/addFlat}" class="btn btn-primary btn-sm mb-3">
+        Add flat
+    </a>
+
+    <hr>
+
+    <table class="table table-bordered table-striped" >
+        <thead >
+        </thead>
+            <tr>
+                <th>Address</th>
+                <th>Rent</th>
+                <th>Associate fee</th>
+                <th>Gas basic price</th>
+                <th>Electricity basic price</th>
+                <th>Water basic price</th>
+            </tr>
+        <tbody>
+            <tr th:each="tempFlat : ${flatList}">
+                <td th:text="${tempFlat.getAddress()}"></td>
+                <td th:text="${tempFlat.getRent()}"></td>
+                <td th:text="${tempFlat.getAssociateFee()}"></td>
+                <td th:text="${tempFlat.getGasBasicPrice()}"></td>
+                <td th:text="${tempFlat.getElectricityBasicPrice()}"></td>
+                <td th:text="${tempFlat.getWaterBasicPrice()}"></td>
+                <td>
+                    <a th:href="@{/flats/flatUpdate (flatId=${tempFlat.id})}"
+                       class="btn btn-info btn-sm">
+                        Update
+                    </a>
+                </td>
+                <td>
+                    <a th:href="@{/flats/flatDelete (flatId=${tempFlat.id})}"
+                       class="btn btn-danger btn-sm"
+                        th:onclick="if (!(confirm('Are you sure you want to delete flat [(${tempFlat.address})]?'))) return false">
+                        Delete
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

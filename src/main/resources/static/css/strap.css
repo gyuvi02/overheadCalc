@@ -11237,6 +11237,19 @@ textarea.form-control-lg {
   .d-print-none {
     display: none !important;
   }
+
+  .grid-container-element {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 20px;
+    border: 1px solid black;
+    width: 50%;
+  }
+  .grid-form-child-element {
+    margin: 10px;
+    border: 1px solid red;
+  }
+
 }
 
 /*# sourceMappingURL=bootstrap.css.map */

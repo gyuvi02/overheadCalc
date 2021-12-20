@@ -14,4 +14,6 @@ public interface TenantService {
 
     void deleteById(int id);
 
+    List<Integer> tenantIdList();
+
 }

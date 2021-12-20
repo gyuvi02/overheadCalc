@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${flat.getAddress() == null} ? 'Add new flat' : 'Update the flat data'"></title>
+
+    <link rel="stylesheet" th:href="@{/css/strap.css}">
+</head>
+<body>
+    <div class="container" >
+        <hr>
+        <h4 th:text="${flat.getAddress() == null} ? 'Add new flat' : 'Update the flat data'" class="h4 mb-4"></h4>
+
+        <form action="#"    th:action="@{/flats/saveFlat}"
+                            th:object="${flat}" method="post">
+            <!-- add hidden form field to handle update -->
+            <input type="hidden" th:field="*{id}"/>
+
+            <table class="table table-striped table-hover table-sm" >
+                <colgroup>
+                    <col span="1" style="background-color:gray" th:width="200px" >
+                    <col style="background-color:ghostwhite" >
+                </colgroup>
+                <tr>
+                    <th>Address:</th>
+                    <th><input type="text" th:field="*{address}" class="form-control mb-4 col-4" placeholder="Address"></th>
+                </tr>
+                <tr>
+                    <th>Rent:</th>
+                    <th><input type="number" th:field="*{rent}" class="form-control mb-4 col-4" placeholder="Ft"></th>
+                </tr>
+                <tr>
+                    <th>Associate fee:</th>
+                    <th><input type="number" th:field="*{associateFee}" class="form-control mb-4 col-4" placeholder="Ft"></th>
+                </tr>
+                <tr>
+                    <th>Gas basic price:</th>
+                    <th><input type="number" th:field="*{gasBasicPrice}" class="form-control mb-4 col-4" placeholder="Ft"></th>
+                </tr>
+                <tr>
+                    <th>Electricity basic price:</th>
+                    <th><input type="number" th:field="*{electricityBasicPrice}" class="form-control mb-4 col-4" placeholder="Ft"></th>
+                </tr>
+                <tr>
+                    <th>Water basic price:</th>
+                    <th><input type="number" th:field="*{waterBasicPrice}" class="form-control mb-4 col-4" placeholder="Ft"></th>
+                </tr>
+                <tr>
+                    <th>Tenant name:</th>
+                    <th><select th:field="*{tenantId}">
+                        <option th:each="tenant : ${tenantList}"
+                                th:text="${tenant.lastName}"
+                                th:value="${tenant.id}">
+                        </option>
+                    </select></th>
+                </tr>
+            </table>
+            <br> <br>
+
+            <button type="submit" class="btn btn-info col-2">Save</button>
+            <a th:href="@{/flats/flatList}">Back to the flat list</a>
+            <!--            <button type="button" class="btn btn-info col-2"><a style="text-decoration: none; color: black"  th:href="@{/flats/flatList}">Cancel</a></button>-->
+        </form>
+        </div>
+        <hr>
+
+
+
+</body>
+</html>

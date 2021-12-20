@@ -32,7 +32,8 @@
                 <th>phone</th>
             </tr>
         <tbody>
-            <tr th:each="tempTenant : ${tenantList}">
+        <!-- I need to skip record with id=1, it is a dummy record -->
+        <tr th:each="tempTenant, rStat : ${tenantList}" th:if="${tempTenant.id != 1}">
                 <td th:text="${tempTenant.getFirstName()}"></td>
                 <td th:text="${tempTenant.getLastName()}"></td>
                 <td th:text="${tempTenant.getEmail()}"></td>

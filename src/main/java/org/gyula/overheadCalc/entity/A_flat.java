@@ -1,5 +1,7 @@
 package org.gyula.overheadCalc.entity;
 
+import lombok.NonNull;
+
 import javax.persistence.*;
 
 @Entity
@@ -12,6 +14,7 @@ public class A_flat {
     private int id;
 
     @Column(name = "address")
+    @NonNull
     private String address;
 
     @Column(name = "rent")
@@ -30,7 +33,8 @@ public class A_flat {
     private int waterBasicPrice;
 
     @Column(name = "tenant_id")
-    private int tenantId;
+    private int tenantId = 1; // tenant id = 1 is a dummy tenant to avoid constraint violation
+//    private int tenantId;
 
     public A_flat() {
     }

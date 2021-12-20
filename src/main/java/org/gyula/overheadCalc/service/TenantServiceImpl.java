@@ -5,6 +5,7 @@ import org.gyula.overheadCalc.entity.A_tenant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,7 +27,7 @@ public class TenantServiceImpl implements TenantService{
 
     @Override
     public List<A_tenant> findAll() {
-        return tenantRepository.findAllByOrderByLastNameAsc();
+        return tenantRepository.findAll();
     }
 
     @Override
@@ -53,5 +54,15 @@ public class TenantServiceImpl implements TenantService{
     @Override
     public void deleteById(int id) {
         tenantRepository.deleteById(id);
+    }
+
+    // I need a list of the
+    @Override
+    public List<Integer> tenantIdList() {
+        List<Integer> tenantIds = new ArrayList<>();
+        for (A_tenant tenant : tenantRepository.findAll()) {
+            tenantIds.add(tenant.getId());
+        }
+        return tenantIds;
     }
 }
