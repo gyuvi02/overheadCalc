@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns: th="http://www.thymeleaf.org">
+<link href="data:image/x-icon;" rel="shortcut icon" />
+<link rel="stylesheet" th:href="@{/css/strap.css}">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Access denied</title>
+</head>
+<body>
+<h2>Sorry, your role is not sufficient for this page</h2>
+<br>
+<br>
+
+<a th:href="@{/home}" class="btn btn-primary">
+    Back to your home page
+</a>
+
+<br>
+<br>
+
+<!-- add a logout button -->
+<form th:action="@{/logout}">
+    <input class="btn btn-outline-primary" type="submit" value="Log Out"/>
+</form>
+
+</body>
+</html>

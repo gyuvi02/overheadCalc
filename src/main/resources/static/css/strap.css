@@ -2022,6 +2022,20 @@ progress {
   border-color: #bacbe6;
 }
 
+.table-primary-flatForm {
+  max-width: 700px;
+  background-color: #b6d4fe;
+}
+/*.table-primary-flatForm, th, td{*/
+/*  border: 1px solid black;*/
+/*  width: 200px;*/
+/*  overflow: hidden;*/
+/*}*/
+
+td.table-primary-flatForm {
+  max-height: 10px;
+}
+
 .table-secondary {
   --bs-table-bg: #e2e3e5;
   --bs-table-striped-bg: #d7d8da;
@@ -3303,7 +3317,7 @@ textarea.form-control-lg {
 }
 
 .btn-outline-info {
-  color: #0dcaf0;
+  color: red;
   border-color: #0dcaf0;
 }
 .btn-outline-info:hover {

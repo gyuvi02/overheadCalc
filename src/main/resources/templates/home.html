@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns: th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<link href="data:image/x-icon;" rel="shortcut icon" />
+<link rel="stylesheet" th:href="@{/css/strap.css}">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+
+<h3 th:text="'Welcome, ' + ${username} + '!'"></h3>
+
+<div sec:authorize="hasRole('ADMIN')">
+    <a th:href="@{/flats/flatList}" class="btn btn-primary">
+        The flat list
+    </a>
+
+</div>
+<br>
+<div sec:authorize="hasRole('ADMIN')">
+    <a th:href="@{/tenants/tenantList}" class="btn btn-primary">
+        The tenant list
+    </a>
+
+</div>
+<br>
+<!-- add a logout button -->
+<form th:action="@{/logout}" method="post">
+    <div><input class="btn btn-outline-primary" type="submit" value="Log Out"/></div>
+</form>
+
+</body>
+</html>

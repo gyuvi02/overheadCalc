@@ -36,11 +36,27 @@ public class A_flat {
     private int tenantId = 1; // tenant id = 1 is a dummy tenant to avoid constraint violation
 //    private int tenantId;
 
+    @ManyToOne
+    @JoinColumn(name = "tenant_id", insertable = false, updatable = false)
+    private A_tenant theTenant;
+
+
     public A_flat() {
     }
 
-    public A_flat(String address, int rent, int associateFee, int gasBasicPrice, int electricityBasicPrice,
-                  int waterBasicPrice, int tenantId) {
+//    public A_flat(String address, int rent, int associateFee, int gasBasicPrice, int electricityBasicPrice,
+//                  int waterBasicPrice, int tenantId) {
+//        this.address = address;
+//        this.rent = rent;
+//        this.associateFee = associateFee;
+//        this.gasBasicPrice = gasBasicPrice;
+//        this.electricityBasicPrice = electricityBasicPrice;
+//        this.waterBasicPrice = waterBasicPrice;
+//        this.tenantId = tenantId;
+//    }
+
+    public A_flat(@NonNull String address, int rent, int associateFee, int gasBasicPrice, int electricityBasicPrice,
+                  int waterBasicPrice, int tenantId, A_tenant theTenant) {
         this.address = address;
         this.rent = rent;
         this.associateFee = associateFee;
@@ -48,6 +64,7 @@ public class A_flat {
         this.electricityBasicPrice = electricityBasicPrice;
         this.waterBasicPrice = waterBasicPrice;
         this.tenantId = tenantId;
+        this.theTenant = theTenant;
     }
 
     public int getId() {
@@ -112,6 +129,14 @@ public class A_flat {
 
     public void setTenantId(int tenantId) {
         this.tenantId = tenantId;
+    }
+
+    public A_tenant getTheTenant() {
+        return theTenant;
+    }
+
+    public void setTheTenant(A_tenant theTenant) {
+        this.theTenant = theTenant;
     }
 
     @Override

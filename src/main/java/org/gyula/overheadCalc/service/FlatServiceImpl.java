@@ -1,55 +1,50 @@
 package org.gyula.overheadCalc.service;
 
-import org.gyula.overheadCalc.dao.FlatRepository;
-import org.gyula.overheadCalc.dao.TenantRepository;
 import org.gyula.overheadCalc.entity.A_flat;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.gyula.overheadCalc.entity.A_tenant;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.util.List;
-import java.util.Optional;
 
-@Service
+@Component
 public class FlatServiceImpl implements FlatService{
 
-    FlatRepository flatRepository;
-    TenantRepository tenantRepository;
-
-
-    @Autowired
-    public FlatServiceImpl(FlatRepository flatRepository) {
-        this.flatRepository = flatRepository;
-    }
+    @PersistenceContext
+    private EntityManager em;
 
     @Override
     public List<A_flat> findAll() {
-        return flatRepository.findAll();
+        Query q = em.createQuery("from A_flat ");
+        List<A_flat> result = q.getResultList();
+        return result;
     }
 
     @Override
     public A_flat findById(int id) {
-        Optional<A_flat> result = flatRepository.findById(id);
 
-        A_flat a_flat = null;
-
-        if (result.isPresent()) {
-            a_flat = result.get();
+        try {
+            A_flat a_flat = em.find(A_flat.class, id);
+            return a_flat;
+        } catch (Exception e) {
+            e.getCause();
+            System.out.println("Did not find flat id - " + id);
+            return null;
         }
-        else {
-            // we didn't find the tenant
-            throw new RuntimeException("Did not find flat id - " + id);
-        }
-        return a_flat;
     }
 
     @Override
+    @Transactional
     public void save(A_flat theFlat) {
-        flatRepository.save(theFlat);
+        em.merge(theFlat);
     }
 
     @Override
+    @Transactional
     public void deleteById(int id) {
-        flatRepository.deleteById(id);
-
+        em.remove(findById(id));
     }
 }

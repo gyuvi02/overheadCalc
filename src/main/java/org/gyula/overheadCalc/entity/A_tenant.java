@@ -4,6 +4,7 @@ import lombok.NonNull;
 import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name="a_tenant")
@@ -29,14 +30,26 @@ public class A_tenant {
     @Column(name = "phone")
     private String phone;
 
+    @OneToMany(mappedBy = "theTenant")
+    private List<A_flat> flats;
+
     public A_tenant() {
     }
 
-    public A_tenant(String firstName, String lastName, String email, String phone) {
+//    public A_tenant(String firstName, String lastName, String email, String phone) {
+//        this.firstName = firstName;
+//        this.lastName = lastName;
+//        this.email = email;
+//        this.phone = phone;
+//    }
+
+
+    public A_tenant(@NonNull String firstName, @NonNull String lastName, @NonNull String email, String phone, List<A_flat> flats) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phone = phone;
+        this.flats = flats;
     }
 
     public int getId() {
@@ -77,6 +90,14 @@ public class A_tenant {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public List<A_flat> getFlats() {
+        return flats;
+    }
+
+    public void setFlats(List<A_flat> flats) {
+        this.flats = flats;
     }
 
     @Override

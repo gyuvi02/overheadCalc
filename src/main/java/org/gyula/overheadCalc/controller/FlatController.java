@@ -5,6 +5,7 @@ import org.gyula.overheadCalc.entity.A_flat;
 import org.gyula.overheadCalc.service.FlatService;
 import org.gyula.overheadCalc.service.TenantService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -48,9 +49,11 @@ public class FlatController {
     }
 
     @GetMapping("/flatUpdate")
-    public String updateFlat(@RequestParam("flatId") int theId, Model model) {
+    public String updateFlat(@RequestParam("flatId") int theId, Model model, Authentication authentication) {
         A_flat updatedFlat = flatService.findById(theId);
         model.addAttribute("flat", updatedFlat);
+        model.addAttribute("tenantList", tenantService.findAll());
+        model.addAttribute("authentication", authentication);
         log.info("Going to update form with data of: " + updatedFlat.getAddress());
         return "flatTemplate/flat-form";
     }
@@ -61,4 +64,7 @@ public class FlatController {
         log.info("Deleted the flat with the id " + theId);
         return "redirect:/flats/flatList";
     }
+
+
+
 }

@@ -2,11 +2,11 @@ package org.gyula.overheadCalc.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.gyula.overheadCalc.entity.A_tenant;
+import org.gyula.overheadCalc.service.FlatService;
 import org.gyula.overheadCalc.service.TenantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -15,15 +15,16 @@ import org.springframework.web.bind.annotation.*;
 public class TenantController {
 
     TenantService tenantService;
+    FlatService flatService;
 
-    @Autowired
-    public TenantController(TenantService tenantService) {
+    public TenantController(TenantService tenantService, FlatService flatService) {
         this.tenantService = tenantService;
+        this.flatService = flatService;
     }
 
     @GetMapping("/tenantList")
-    public String allTenants(Model theModel) {
-        theModel.addAttribute("tenantList", tenantService.findAll());
+    public String allTenants(Model model) {
+        model.addAttribute("tenantList", tenantService.findAll());
         log.info("Listed all the tenants in the database");
         return "tenantTemplate/tenantList";
     }
@@ -46,14 +47,14 @@ public class TenantController {
 
     @GetMapping("/tenantUpdate")
     public String updateTenant(@RequestParam("tenantId") int theId, Model model) {
-        A_tenant updatedTenant = tenantService.findById(theId);
-        model.addAttribute("tenant", updatedTenant);
-        log.info("Going to update form with data of: " + updatedTenant.getFirstName() + " " + updatedTenant.getLastName());
+        A_tenant tenantToUpdate = tenantService.findById(theId);
+        model.addAttribute("tenant", tenantToUpdate);
+        log.info("Going to update form with data of: " + tenantToUpdate.getFirstName() + " " + tenantToUpdate.getLastName());
         return "tenantTemplate/tenant-form";
     }
 
     @GetMapping("/tenantDelete")
-    public String deleteTenant(@RequestParam("tenantId") int theId) {
+    public String deleteTenant(@RequestParam("tenantId") int theId, Model model) {
         tenantService.deleteById(theId);
         log.info("Deleted the tenant with the id " + theId);
         return "redirect:/tenants/tenantList";
