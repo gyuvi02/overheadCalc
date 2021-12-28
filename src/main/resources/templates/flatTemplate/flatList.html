@@ -12,16 +12,14 @@
 
 
 </head>
-<body>
-<div class="container">
-    <h4 th:text="'The list of all flats'" class="text-decoration-underline text-center"></h4>
+<body class="d-flex flex-column justify-content-between text-center">
+<div class="container" style="padding-top: 50px">
+    <h3 th:text="'The list of all flats'" style="text-align: center; font-weight: bolder"></h3>
 
     <!-- Adding a button -->
-    <a th:href="@{/flats/addFlat}" class="btn btn-primary mb-3">
+    <a th:href="@{/flats/addFlat}" class="btn btn-primary mb-3" style="float: left">
         Add flat
     </a>
-
-    <hr>
 
     <table class="table table-bordered table-striped" >
         <thead style="text-align: center">
@@ -63,15 +61,19 @@
     <br>
 
     <form action="/home" >
-        <div><input class="btn btn-primary" type="submit" value="Back to your home page" /></div>
+        <div><input class="btn btn-primary" style="float: left" type="submit" value="Back to your home page" /></div>
     </form>
     <br>
+    <br>
+    <br>
+
 
     <form th:action="@{/logout}" method="post">
         <div><input type="submit" class="btn btn-outline-primary col-1" value="Log Out"/></div>
     </form>
-
-
 </div>
+
+<footer  th:replace="~{fragments/footer :: footer}"></footer>
+
 </body>
 </html>

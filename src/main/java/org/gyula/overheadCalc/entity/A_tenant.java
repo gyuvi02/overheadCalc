@@ -1,7 +1,6 @@
 package org.gyula.overheadCalc.entity;
 
 import lombok.NonNull;
-import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.*;
 import java.util.List;

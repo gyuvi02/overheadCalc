@@ -8,11 +8,11 @@
 
     <link rel="stylesheet" th:href="@{/css/strap.css}">
 </head>
-<body>
+<body class="d-flex flex-column justify-content-between text-center">
     <div class="container" >
 
-        <hr>
-        <h4 th:text="${flat.getAddress() == null} ? 'Add new flat' : 'Update the flat data'" class="h4 mb-4"></h4>
+        <h4 th:text="${flat.address == null} ? 'Add new flat' : 'Update the flat data'" class="h4 mb-4"></h4>
+<!--        <h4 th:text="${flat.getAddress() == null} ? 'Add new flat' : 'Update the flat data'" class="h4 mb-4"></h4>-->
 
         <form action="#"    th:action="@{/flats/saveFlat}"
                             th:object="${flat}" method="post">
@@ -61,14 +61,14 @@
             </table>
             <br> <br>
 
-            <button type="submit" class="btn btn-primary col-2">Save</button>
+            <button type="submit" class="btn btn-primary col-2" style="margin-right: 100px; float: left">Save</button>
 
-            <a th:href="@{/flats/flatList}" class="btn btn-primary col-2">
-                Back to the flat list
-            </a>
+            <a th:href="@{/flats/flatList}" class="btn btn-primary col-3" style="float: left">Back to the flat list</a>
         </form>
     </div>
         <hr>
+
+    <footer  th:replace="~{fragments/footer :: footer}"></footer>
 
 </body>
 </html>

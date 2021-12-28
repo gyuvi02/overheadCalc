@@ -4,37 +4,56 @@
 
 <head>
     <meta charset="UTF-8">
-    <
 <!--    <title th:if="${tenant.id == null}">Add new tenant</title>-->
-    <title th:text="${tenant.lastName == null} ? 'Add new tenant' : 'Update the tenant data'"></title>
+    <title th:text="${tenant.lastName == null} ? 'Add new tenant' : 'Update the tenant data'" class="h4 mb-4"></title>
 
     <link rel="stylesheet" th:href="@{/css/strap.css}">
 </head>
-<body>
-    <div class="container-md">
-        <hr>
-        <h4 th:text="${tenant.lastName == null} ? 'Add new tenant' : 'Update the tenant data'" class="h4 mb-4"></h4>
+<body class="d-flex flex-column justify-content-between text-center">
+    <div class="container">
+        <br>
+        <h4 th:text="${tenant.lastName == null} ? 'Add new tenant' : 'Update the tenant data'" class="h4 mb-4" style="font-weight: bolder"></h4>
 
         <form action="#"    th:action="@{/tenants/saveTenant}"
                             th:object="${tenant}" method="post">
             <!-- add hidden form field to handle update -->
-            <input type="hidden" th:field="*{id}"/>
-            <input type="text" th:field="*{firstName}" class="form-control mb-4 col-4" placeholder="First name">
-            <input type="text" th:field="*{lastName}" class="form-control mb-4 col-4" placeholder="Last name">
-            <input type="text" th:field="*{email}" class="form-control mb-4 col-4" placeholder="Email address">
-            <input type="text" th:field="*{phone}" class="form-control mb-4 col-4" placeholder="Phone number">
 
-            <button type="submit" class="btn btn-primary col-2">Save</button>
+            <table class="table table-primary-flatForm table-hover "  >
+                <colgroup>
+                    <col style="width:25%">
+                    <col style="width:75%">
+                </colgroup>
+                <tr>
+                    <th style="display: none">id:</th>
+                    <th><input type="hidden" th:field="*{id}" class="form-control mb-4 col-4" style="display: none" placeholder="id"></th>
+                </tr>
+                <tr>
+                    <th>First name:</th>
+                    <th><input type="text" th:field="*{firstName}" class="form-control mb-4 col-4" placeholder="First name"></th>
+                </tr>
+                <tr>
+                    <th>Last name:</th>
+                    <th><input type="text" th:field="*{lastName}" class="form-control mb-4 col-4" placeholder="Last name"></th>
+                </tr>
+                <tr>
+                    <th>Email:</th>
+                    <th><input type="text" th:field="*{email}" class="form-control mb-4 col-4" placeholder="Email"></th>
+                </tr>
+                <tr>
+                    <th>Phone:</th>
+                    <th><input type="text" th:field="*{phone}" class="form-control mb-4 col-4" placeholder="Phone"></th>
+                </tr>
+            </table>
+            <button type="submit" class="btn btn-primary col-2" style="margin-right: 100px; float: left">Save</button>
 
-            <a th:href="@{/tenants/tenantList}" class="btn btn-primary col-2">
+            <a th:href="@{/tenants/tenantList}" class="btn btn-primary col-2" style="float: left">
                 Back to the tenant list
             </a>
         </form>
 
-        <hr>
-
     </div>
 
+    <footer  th:replace="~{fragments/footer :: footer}"></footer>
 
 </body>
 </html>

@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Start page</title>
+<!--    <title>Start page</title>-->
     <link rel="stylesheet" th:href="@{/css/strap.css}">
 
     <style>
@@ -41,14 +41,17 @@
 
 </head>
 <body>
-<h1>Welcome to the overheads administration project with Spring Boot!
-    <br>
-    You do not need to log in for this page!</h1>
-<br>
 
-<form action="/home">
-    <div><input class="btn btn-primary" type="submit" value="Start"/></div>
-</form>
+    <h1>Welcome to the overheads administration project with Spring Boot!
+        <br>
+        You do not need to log in for this page!</h1>
+    <br>
+
+    <form action="/home">
+        <div><input class="btn btn-primary" type="submit" value="Start"/></div>
+    </form>
+
+    <footer  th:replace="~{fragments/footer :: footer}"></footer>
 
 </body>
 </html>

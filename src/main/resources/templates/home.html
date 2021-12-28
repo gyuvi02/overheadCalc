@@ -8,28 +8,42 @@
     <meta charset="UTF-8">
     <title>Home</title>
 </head>
-<body>
+<body class="d-flex flex-column justify-content-between text-center" style="padding-top: 50px">
 
-<h3 th:text="'Welcome, ' + ${username} + '!'"></h3>
+<nav class="ccsticky-nav">
+    <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Shop</a></li>
+        <li><a href="#">Contact</a></li>
+    </ul>
+</nav>
 
-<div sec:authorize="hasRole('ADMIN')">
-    <a th:href="@{/flats/flatList}" class="btn btn-primary">
-        The flat list
-    </a>
+<div class="container-xl" style=" text-align: center; margin-top: 100px">
+    <h2 th:text="'Welcome, ' + ${username} + '!'" style="alignment: center"></h2>
+    <br>
+    <br>
+    <div sec:authorize="hasRole('ADMIN')" style="text-align: left">
+        <a th:href="@{/flats/flatList}" class="btn btn-primary">
+            The flat list
+        </a>
+
+    </div>
+    <br>
+    <div sec:authorize="hasRole('ADMIN')" style="text-align: left">
+        <a th:href="@{/tenants/tenantList}" class="btn btn-primary">
+            The tenant list
+        </a>
+
+    </div>
+    <br>
+    <!-- add a logout button -->
+    <form th:action="@{/logout}" method="post">
+        <div><input class="btn btn-outline-primary" type="submit" value="Log Out"/></div>
+    </form>
 
 </div>
-<br>
-<div sec:authorize="hasRole('ADMIN')">
-    <a th:href="@{/tenants/tenantList}" class="btn btn-primary">
-        The tenant list
-    </a>
 
-</div>
-<br>
-<!-- add a logout button -->
-<form th:action="@{/logout}" method="post">
-    <div><input class="btn btn-outline-primary" type="submit" value="Log Out"/></div>
-</form>
-
+<footer  th:replace="~{fragments/footer :: footer}"></footer>
 </body>
 </html>
