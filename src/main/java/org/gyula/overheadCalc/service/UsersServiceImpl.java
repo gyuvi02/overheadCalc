@@ -16,7 +16,9 @@ public class UsersServiceImpl implements UsersService{
 
     @Override
     public List<Users> findAll() {
-        return null;
+        Query q = em.createQuery("from Users ");
+        List<Users> result = q.getResultList();
+        return result;
     }
 
     @Override
@@ -35,16 +37,11 @@ public class UsersServiceImpl implements UsersService{
 
     @Override
     public void save(Users theUser) {
-
+        em.merge(theUser);
     }
 
     @Override
     public void deleteByUserName(String userName) {
-
-    }
-
-    @Override
-    public void update(String userName) {
-
+        em.remove(findByUserName(userName));
     }
 }

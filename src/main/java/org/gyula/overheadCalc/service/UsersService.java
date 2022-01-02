@@ -1,7 +1,6 @@
 package org.gyula.overheadCalc.service;
 
 import org.gyula.overheadCalc.entity.Users;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -14,7 +13,5 @@ public interface UsersService {
     void save(Users theUser);
 
     void deleteByUserName(String userName);
-
-    void update(String userName);
 
 }

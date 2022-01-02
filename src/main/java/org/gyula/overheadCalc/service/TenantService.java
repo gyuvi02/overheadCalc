@@ -16,6 +16,4 @@ public interface TenantService {
 
     List<Integer> tenantIdList();
 
-    void update(int id);
-
 }

@@ -83,10 +83,4 @@ public class TenantServiceImpl implements TenantService{
         }
         return tenantIds;
     }
-
-    @Override
-    public void update(int id) {
-        A_tenant theTenant = findById(id);
-
-    }
 }
