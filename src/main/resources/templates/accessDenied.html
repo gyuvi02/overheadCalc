@@ -8,19 +8,17 @@
     <title>Access denied</title>
 </head>
 <body class="d-flex flex-column justify-content-between text-center" style="padding-top: 50px">
+    <header th:replace="~{fragments/header :: header(${userName})}"></header>
+
     <h2>Sorry, your role is not sufficient for this page</h2>
 
     <div class="container">
-        <a th:href="@{/home}" class="btn btn-primary col-2">
-            Back to your home page
-        </a>
+<!--        <a th:href="@{/home}" class="btn btn-primary col-2">-->
+<!--            Back to your home page-->
+<!--        </a>-->
         <br>
         <br>
         <br>
-        <!-- add a logout button -->
-        <form th:action="@{/logout}">
-            <input class="btn btn-outline-primary" type="submit" value="Log Out"/>
-        </form>
     </div>
 
     <footer  th:replace="~{fragments/footer :: footer}"></footer>

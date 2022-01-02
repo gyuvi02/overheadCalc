@@ -36,7 +36,7 @@ public class A_flat {
     private int tenantId = 1; // tenant id = 1 is a dummy tenant to avoid constraint violation
 //    private int tenantId;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "tenant_id", insertable = false, updatable = false)
     private A_tenant theTenant;
 

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<link href="data:image/x-icon;" rel="shortcut icon" />
+<link rel="stylesheet" th:href="@{/css/strap.css}">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Start page</title>
+
+</head>
+<body class="d-flex flex-column justify-content-between text-center" style="padding-top: 50px">
+
+<header th:replace="~{fragments/header :: header(imageUser = 'empty')}"></header>
+    <div class="container-sm" style="margin-top: -10%">
+        <h1>Welcome to the overheads administration project with Spring Boot!
+            <br>
+            You do not need to log in for this page!</h1>
+        <br>
+        <br>
+        <form action="/home">
+            <div><input class="btn btn-primary" type="submit" value="Log in"/></div>
+        </form>
+    </div>
+
+    <footer  th:replace="~{fragments/footer :: footer}"></footer>
+
+</body>
+</html>

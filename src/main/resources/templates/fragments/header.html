@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns: th="http://www.thymeleaf.org">
+<link href="data:image/x-icon;" rel="shortcut icon" />
+<link rel="stylesheet" th:href="@{/css/strap.css}">
+
+<header th:fragment="header(imageUser)" style="color: white; background: #0d6efd">
+            <nav class="ccsticky-nav">
+                <a style="float: left; width: 5%" th:if="${#httpServletRequest.requestURI != '/login' and #httpServletRequest.requestURI != '/'}">
+                    <img  class="usrPhoto" th:src="${'/userImages/' + imageUser + '.jpg'}"
+                          width="70px" height="70px" onerror="this.src='userImages/empty.jpg'">
+                </a>
+                <a th:if="${#httpServletRequest.requestURI != '/login' and #httpServletRequest.requestURI != '/'}" th:text="${imageUser}" style="float: left; width: 5%; font-weight: bolder; margin-top:25px"></a>
+                <ul style="width: 80%; margin-left: 8%">
+                    <li th:if="${#httpServletRequest.requestURI != '/login' and #httpServletRequest.requestURI != '/'}">
+                        <a th:href="@{/logout}" >Log out</a></li>
+                    <li th:if="${#httpServletRequest.requestURI != '/login' and #httpServletRequest.requestURI != '/'
+                        and #httpServletRequest.requestURI != '/home'}">
+                        <a th:href="@{/home}" >
+                            Your home page
+                        </a>
+
+                    </li>
+                </ul>
+            </nav>
+
+</header>
+</html>

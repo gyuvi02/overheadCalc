@@ -12,7 +12,10 @@
 
 
 </head>
-<body class="d-flex flex-column justify-content-between text-center">
+<body class="d-flex flex-column justify-content-between text-center" >
+
+<header th:replace="~{fragments/header :: header(${userName})}"></header>
+
 <div class="container" style="padding-top: 50px">
     <h3 th:text="'The list of all flats'" style="text-align: center; font-weight: bolder"></h3>
 
@@ -58,19 +61,7 @@
             </tr>
         </tbody>
     </table>
-    <br>
 
-    <form action="/home" >
-        <div><input class="btn btn-primary" style="float: left" type="submit" value="Back to your home page" /></div>
-    </form>
-    <br>
-    <br>
-    <br>
-
-
-    <form th:action="@{/logout}" method="post">
-        <div><input type="submit" class="btn btn-outline-primary col-1" value="Log Out"/></div>
-    </form>
 </div>
 
 <footer  th:replace="~{fragments/footer :: footer}"></footer>

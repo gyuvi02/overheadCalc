@@ -16,74 +16,70 @@
 </head>
 <body class="d-flex flex-column justify-content-between text-center">
 
-<div class="container" style="margin-top: 50px">
-    <h4 th:text="'The list of all tenants'" style="text-align: center; font-weight: bolder"></h4>
-    <br>
-    <!-- Adding a button -->
-        <a th:href="@{/tenants/addTenant}" class="btn btn-primary mb-3" style="float: left">
-            Add tenant
-        </a>
+    <header th:replace="~{fragments/header :: header(${userName})}"></header>
+
+    <div class="container" style="margin-top: 50px">
+        <h4 th:text="'The list of all tenants'" style="text-align: center; font-weight: bolder"></h4>
+        <br>
+        <!-- Adding a button -->
+            <a th:href="@{/tenants/addTenant}" class="btn btn-primary mb-3" style="float: left">
+                Add tenant
+            </a>
 
 
-    <table class="table table-bordered table-striped" >
-        <thead style="text-align: center">
-            <tr>
-                <th>FIRST NAME</th>
-                <th>LAST NAME</th>
-                <th>EMAIL</th>
-                <th>PHONE</th>
-                <th>FLAT</th>
-                <th>UPDATE</th>
-                <th>DELETE</th>
-            </tr>
-        </thead>
-        <tbody>
-        <!-- I need to skip record with id=1, it is a dummy record -->
-        <tr th:each="tempTenant, rStat : ${tenantList}" th:if="${tempTenant.id != 1}">
-                <td th:text="${tempTenant.getFirstName()}"></td>
-                <td th:text="${tempTenant.getLastName()}"></td>
-                <td th:text="${tempTenant.getEmail()}"></td>
-                <td th:text="${tempTenant.getPhone()}"></td>
-                <td th:switch="${tempTenant.getFlats().size()}">
-                    <span th:case="'0'">No flat assigned</span>
-                    <span th:case="'1'" th:text="${tempTenant.getFlats().get(0).address}"></span>
-                    <div th:case="*">
-                        <div th:each="tempFlat, rStat : ${tempTenant.getFlats}">
-                            <a th:text="${tempFlat.address}"></a>
+        <table class="table table-bordered table-striped" >
+            <thead style="text-align: center">
+                <tr>
+                    <th>FIRST NAME</th>
+                    <th>LAST NAME</th>
+                    <th>EMAIL</th>
+                    <th>PHONE</th>
+                    <th>FLAT</th>
+                    <th>UPDATE</th>
+                    <th>DELETE</th>
+                </tr>
+            </thead>
+            <tbody >
+            <!-- I need to skip record with id=1, it is a dummy record -->
+            <tr th:each="tempTenant, rStat : ${tenantList}" th:if="${tempTenant.id != 1}">
+                    <td th:text="${tempTenant.getFirstName()}"></td>
+                    <td th:text="${tempTenant.getLastName()}"></td>
+                    <td th:text="${tempTenant.getEmail()}"></td>
+                    <td th:text="${tempTenant.getPhone()}"></td>
+                    <td th:switch="${tempTenant.getFlats().size()}">
+                        <span th:case="'0'">No flat assigned</span>
+                        <span th:case="'1'" th:text="${tempTenant.getFlats().get(0).address}"></span>
+                        <div th:case="*">
+                            <div th:each="tempFlat, rStat : ${tempTenant.getFlats}">
+                                <a th:text="${tempFlat.address}"></a>
+                            </div>
                         </div>
-                    </div>
-                </td>
-                <td>
-                    <a th:href="@{/tenants/tenantUpdate (tenantId=${tempTenant.id})}"
-                       class="btn btn-primary btn-sm" >
-                        Update
-                    </a>
-                </td>
-                <td th:switch="${tempTenant.getFlats().size()}">
-                    <span th:case="'0'">
-                        <a th:href="@{/tenants/tenantDelete (tenantId=${tempTenant.id})}" class="btn btn-danger btn-sm"
-                            th:onclick="if (!(confirm('Are you sure you want to delete tenant [(${tempTenant.lastName})] [(${tempTenant.firstName})]?'))) return false">
-                            Delete
+                    </td>
+                    <td>
+                        <a th:href="@{/tenants/tenantUpdate (tenantId=${tempTenant.id})}"
+                           class="btn btn-primary btn-sm" >
+                            Update
                         </a>
-                    </span>
-                    <span th:case="*">You cannot delete a tenant if there is a flat assigned.<br> Please remove assigned flat(s) first! (Flat -> Update)</span>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <br>
+                    </td>
+                    <td style="max-width: 300px" th:switch="${tempTenant.getFlats().size()}">
+                        <span th:case="'0'">
+                            <a th:href="@{/tenants/tenantDelete (tenantId=${tempTenant.id})}" class="btn btn-danger btn-sm"
+                                th:onclick="if (!(confirm('Are you sure you want to delete tenant [(${tempTenant.lastName})] [(${tempTenant.firstName})]?'))) return false">
+                                Delete
+                            </a>
+                        </span>
+                        <span th:case="*">You cannot delete a tenant if there is a flat assigned.<br>
+                            Please remove flat assignment
+                            <a th:href="@{/flats/flatUpdate(flatId=${tempTenant.getFlats.get(0).id})}">here</a>
+                             first! <br> (Set Tenant name to --------- and save)
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <br>
 
-    <form action="/home" >
-        <div><input class="btn btn-primary" style="float: left" type="submit" value="Back to your home page" /></div>
-    </form>
-    <br>
-    <br>
-    <br>
-
-    <form th:action="@{/logout}" method="post">
-        <div><input type="submit" class="btn btn-outline-primary col-1" value="Log Out"/></div>
-    </form>
-</div>
+    </div>
 
 <footer  th:replace="~{fragments/footer :: footer}"></footer>
 

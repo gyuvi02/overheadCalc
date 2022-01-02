@@ -9,7 +9,10 @@
     <link rel="stylesheet" th:href="@{/css/strap.css}">
 </head>
 <body class="d-flex flex-column justify-content-between text-center">
-    <div class="container" >
+
+<header th:replace="~{fragments/header :: header(${userName})}"></header>
+
+    <div class="container" style="margin-top: 50px" >
 
         <h4 th:text="${flat.address == null} ? 'Add new flat' : 'Update the flat data'" class="h4 mb-4"></h4>
 <!--        <h4 th:text="${flat.getAddress() == null} ? 'Add new flat' : 'Update the flat data'" class="h4 mb-4"></h4>-->
@@ -19,38 +22,38 @@
             <!-- add hidden form field to handle update -->
             <input type="hidden" th:field="*{id}"/>
 
-            <table class="table table-primary-flatForm table-hover "  >
+            <table class="table table-primary-flatForm table-hover ">
                 <colgroup>
                     <col style="width:30%">
                     <col style="width:70%">
                 </colgroup>
                 <tr>
                     <th>Address:</th>
-                    <th><input type="text" th:field="*{address}" class="form-control mb-4 col-4" placeholder="Address"></th>
+                    <th><input type="text" th:field="*{address}" class="form-control mb-4 col-4" style="border-radius: 10px" placeholder="Address"></th>
                 </tr>
                 <tr>
                     <th>Rent:</th>
-                    <th><input type="number" th:field="*{rent}" class="form-control mb-4 col-4" placeholder="Ft"></th>
+                    <th><input type="number" th:field="*{rent}" class="form-control mb-4 col-4" style="border-radius: 10px" placeholder="Ft"></th>
                 </tr>
                 <tr>
                     <th>Associate fee:</th>
-                    <th><input type="number" th:field="*{associateFee}" class="form-control mb-4 col-4" placeholder="Ft"></th>
+                    <th><input type="number" th:field="*{associateFee}" class="form-control mb-4 col-4" style="border-radius: 10px" placeholder="Ft"></th>
                 </tr>
                 <tr>
                     <th>Gas basic price:</th>
-                    <th><input type="number" th:field="*{gasBasicPrice}" class="form-control mb-4 col-4" placeholder="Ft"></th>
+                    <th><input type="number" th:field="*{gasBasicPrice}" class="form-control mb-4 col-4" style="border-radius: 10px" placeholder="Ft"></th>
                 </tr>
                 <tr>
                     <th>Electricity basic price:</th>
-                    <th><input type="number" th:field="*{electricityBasicPrice}" class="form-control mb-4 col-4" placeholder="Ft"></th>
+                    <th><input type="number" th:field="*{electricityBasicPrice}" class="form-control mb-4 col-4" style="border-radius: 10px" placeholder="Ft"></th>
                 </tr>
                 <tr>
                     <th>Water basic price:</th>
-                    <th><input type="number" th:field="*{waterBasicPrice}" class="form-control mb-4 col-4" placeholder="Ft"></th>
+                    <th><input type="number" th:field="*{waterBasicPrice}" class="form-control mb-4 col-4" style="border-radius: 10px" placeholder="Ft"></th>
                 </tr>
                 <tr>
                     <th>Tenant name:</th>
-                    <th><select th:field="*{tenantId}">
+                    <th ><select th:field="*{tenantId}" style="width: 200px; border-radius: 10px " >
                         <option th:each="tenant : ${tenantList}"
                                 th:text="${tenant.lastName}"
                                 th:value="${tenant.id}">
