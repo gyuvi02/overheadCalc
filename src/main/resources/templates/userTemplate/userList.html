@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns: th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5" xmlns:th="http://www.w3.org/1999/html">
+<link href="data:image/x-icon;" rel="shortcut icon" />
+<link rel="stylesheet" th:href="@{/css/strap.css}">
+<head>
+    <meta charset="UTF-8">
+    <title>User list</title>
+</head>
+
+<body class="d-flex flex-column justify-content-between text-center" style="padding-top: 50px">
+
+<header th:replace="~{fragments/header :: header(${userName})}"></header>
+
+<div class="container-xl" style="max-width: 800px">
+    <h3 th:text="'The list of all user'" style="text-align: center; font-weight: bolder"></h3>
+
+        <!-- Adding a button -->
+    <a th:href="@{/users/addUser}" class="btn btn-primary mb-3" style="float: left">
+            Add user
+    </a>
+
+    <table class="table table-bordered table-striped"  >
+        <thead style="text-align: center">
+                <tr>
+                    <th>Username</th>
+                    <th>User role</th>
+<!--                    <th>UPDATE</th>-->
+                    <th>DELETE</th>
+                </tr>
+        </thead>
+            <tbody>
+                <tr th:each="tempUser : ${userList}">
+                    <td th:text="${tempUser.username}"></td>
+                    <td th:text="${tempUser.authorities.authority}"></td>
+<!--                    <td th:text="${tempUser.authorities.get(0).getAuthority()}"></td>-->
+<!--                    <td>-->
+<!--                        <a th:href="@{/users/userUpdate (userName=${tempUser.username})}"-->
+<!--                           class="btn btn-primary btn-sm">-->
+<!--                            Update-->
+<!--                        </a>-->
+<!--                    </td>-->
+                    <td >
+                        <a th:href="@{/users/userDelete (userName=${tempUser.username})}" class="btn btn-danger btn-sm"
+                            th:onclick="if (!(confirm('Are you sure you want to delete the user [(${tempUser.username})]?'))) return false">
+                            Delete
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+    </table>
+
+</div>
+
+    <footer  th:replace="~{fragments/footer :: footer}"></footer>
+
+</body>
+</html>

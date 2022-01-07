@@ -7,7 +7,7 @@
             <nav class="ccsticky-nav">
                 <a style="float: left; width: 5%" th:if="${#httpServletRequest.requestURI != '/login' and #httpServletRequest.requestURI != '/'}">
                     <img  class="usrPhoto" th:src="${'/userImages/' + imageUser + '.jpg'}"
-                          width="70px" height="70px" onerror="this.src='userImages/empty.jpg'">
+                          width="70px" height="70px" onerror="this.onerror=null;this.src='/userImages/empty.jpg';">
                 </a>
                 <a th:if="${#httpServletRequest.requestURI != '/login' and #httpServletRequest.requestURI != '/'}" th:text="${imageUser}" style="float: left; width: 5%; font-weight: bolder; margin-top:25px"></a>
                 <ul style="width: 80%; margin-left: 8%">

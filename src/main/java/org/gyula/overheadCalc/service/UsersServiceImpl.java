@@ -1,13 +1,16 @@
 package org.gyula.overheadCalc.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.gyula.overheadCalc.entity.Users;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.List;
 
+@Slf4j
 @Component
 public class UsersServiceImpl implements UsersService{
 
@@ -36,11 +39,13 @@ public class UsersServiceImpl implements UsersService{
     }
 
     @Override
+    @Transactional
     public void save(Users theUser) {
         em.merge(theUser);
     }
 
     @Override
+    @Transactional
     public void deleteByUserName(String userName) {
         em.remove(findByUserName(userName));
     }

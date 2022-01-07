@@ -29,6 +29,10 @@
             The tenant list
         </a>
 
+        <a sec:authorize="hasRole('ADMIN')" th:href="@{/users/userList}" class="btn btn-primary">
+            The user list
+        </a>
+
 
     </div>
     <br>

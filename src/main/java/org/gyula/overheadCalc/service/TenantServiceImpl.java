@@ -45,23 +45,6 @@ public class TenantServiceImpl implements TenantService{
         }
     }
 
-//
-//    @Override
-//    public A_tenant findById(int id) {
-//        Optional<A_tenant> result = tenantRepository.findById(id);
-//
-//        A_tenant a_tenant = null;
-//
-//        if (result.isPresent()) {
-//            a_tenant = result.get();
-//        }
-//        else {
-//            // we didn't find the tenant
-//            throw new RuntimeException("Did not find tenant id - " + id);
-//        }
-//        return a_tenant;
-//    }
-
     @Override
     @Transactional
     public void save(A_tenant theTenant) {

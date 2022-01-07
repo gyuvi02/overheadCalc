@@ -45,6 +45,9 @@ public class FlatServiceImpl implements FlatService{
     @Override
     @Transactional
     public void deleteById(int id) {
-        em.remove(findById(id));
+        Query q = em.createQuery("delete from A_flat where id = :tempFlatId  ");
+        q.setParameter("tempFlatId", id );
+        q.executeUpdate();
+//        em.remove(findById(id));
     }
 }

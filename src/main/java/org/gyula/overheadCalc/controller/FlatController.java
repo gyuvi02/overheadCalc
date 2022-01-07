@@ -2,13 +2,11 @@ package org.gyula.overheadCalc.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.gyula.overheadCalc.entity.A_flat;
-import org.gyula.overheadCalc.entity.Users;
 import org.gyula.overheadCalc.service.FlatService;
 import org.gyula.overheadCalc.service.TenantService;
 import org.gyula.overheadCalc.service.UsersService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +28,7 @@ public class FlatController {
 
     @GetMapping("/flatList")
     public String allFlats(Model model) {
-        model.addAttribute("userName", getUserName());
+        model.addAttribute("userName", getAuthUserName());
         model.addAttribute("flatList", flatService.findAll());
         log.info("Listed all the flats in the database");
         return "flatTemplate/flatList";
@@ -39,7 +37,7 @@ public class FlatController {
     @GetMapping("/addFlat")
     public String addFlat(Model model) {
         A_flat newFlat = new A_flat();
-        model.addAttribute("userName", getUserName());
+        model.addAttribute("userName", getAuthUserName());
         model.addAttribute("flat", newFlat);
         model.addAttribute("tenantList", tenantService.findAll());
         log.info("Adding new flat data, calling the form page");
@@ -49,7 +47,7 @@ public class FlatController {
     @PostMapping("/saveFlat")
     public String saveFlat(@ModelAttribute("flat") A_flat newFlat, Model model) {
         flatService.save(newFlat);
-        model.addAttribute("userName", getUserName());
+        model.addAttribute("userName", getAuthUserName());
         log.info("Saved the new flat: " + newFlat.getAddress());
         //use redirect to prevent duplicate submissions
         return "redirect:/flats/flatList";
@@ -58,7 +56,7 @@ public class FlatController {
     @GetMapping("/flatUpdate")
     public String updateFlat(@RequestParam("flatId") int theId, Model model, Authentication authentication) {
         A_flat updatedFlat = flatService.findById(theId);
-        model.addAttribute("userName", getUserName());
+        model.addAttribute("userName", getAuthUserName());
         model.addAttribute("flat", updatedFlat);
         model.addAttribute("tenantList", tenantService.findAll());
         model.addAttribute("authentication", authentication);
@@ -67,18 +65,16 @@ public class FlatController {
     }
 
     @GetMapping("/flatDelete")
-    public String deleteFlat(@RequestParam("flatId") int theId, Model model, User user) {
-        model.addAttribute("userName", getUserName());
+    public String deleteFlat(@RequestParam("flatId") int theId, Model model) {
+        model.addAttribute("userName", getAuthUserName());
         flatService.deleteById(theId);
         log.info("Deleted the flat with the id " + theId);
         return "redirect:/flats/flatList";
     }
 
-    private String getUserName() {
+    private String getAuthUserName() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentPrincipalName = authentication.getName();
-        Users myUser = usersService.findByUserName(currentPrincipalName);
-        return myUser.getUsername();
+        return authentication.getName();
     }
 
 }

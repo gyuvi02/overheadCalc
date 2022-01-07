@@ -27,13 +27,13 @@ public class LoginController {
 
     @GetMapping("/")
     public String start(HttpServletRequest request) {
-        Locale currentLocale = request.getLocale();
-        String countryCode = currentLocale.getCountry();
-        String countryName = currentLocale.getDisplayCountry();
-        String langCode = currentLocale.getDisplayLanguage();
-        System.out.println("Country code: " + countryCode);
-        System.out.println("Country name: " + countryName);
-        System.out.println("Language code: " + langCode);
+//        Locale currentLocale = request.getLocale();
+//        String countryCode = currentLocale.getCountry();
+//        String countryName = currentLocale.getDisplayCountry();
+//        String langCode = currentLocale.getDisplayLanguage();
+//        System.out.println("Country code: " + countryCode);
+//        System.out.println("Country name: " + countryName);
+//        System.out.println("Language code: " + langCode);
         log.info("Start page mapped");
         return "start";
     }
@@ -46,17 +46,15 @@ public class LoginController {
 
     @GetMapping("/home")
     public String home(@AuthenticationPrincipal User user, Model model) {
-        log.info("start page called");
-        String username = user.getUsername();
-        Users myUser = usersService.findByUserName(username);;
-        model.addAttribute("myUser", myUser);
+        log.info("home page called");
+        model.addAttribute("myUser", user);
         return "home";
     }
 
     //add mapping for /access-denied
     @GetMapping("/accessDenied")
     public String accessDenied(Model model) {
-        model.addAttribute("userName", getUserName());
+        model.addAttribute("userName", getAuthUserName());
         log.info("accessDenied called");
         return "accessDenied";
     }
@@ -68,11 +66,9 @@ public class LoginController {
         return authentication.getPrincipal();
     }
 
-    private String getUserName() {
+    private String getAuthUserName() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentPrincipalName = authentication.getName();
-        Users myUser = usersService.findByUserName(currentPrincipalName);
-        return myUser.getUsername();
+        return authentication.getName();
     }
 
 }

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<link href="data:image/x-icon;" rel="shortcut icon" />
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/strap.css}">
+</head>
+
+<body class="d-flex flex-column justify-content-between text-center">
+    <header th:replace="~{fragments/header :: header(${userName})}"></header>
+
+    <div class="container" style="max-width: 800px; " >
+        <br>
+        <h3 th:text="${user.authorities == null} ? 'Add new user' : 'Update the user data'" style="text-align: center; font-weight: bolder; "></h3>
+        <br>
+        <form action="#"    th:action="@{/users/saveUser}"
+                            th:object="${user}"  method="post">
+            <!-- add hidden form field to handle update -->
+<!--            <input type="hidden" th:field="*{username}"/>-->
+
+            <table class="table table-primary-flatForm table-hover">
+                <colgroup>
+                    <col style="width:30%">
+                    <col style="width:70%">
+                </colgroup>
+<!--                <tr>-->
+<!--                    <th style="display: none">id:</th>-->
+<!--                    <th><input type="hidden" th:field="*{authorities.id}" class="form-control mb-4 col-4" style="display: none; " placeholder="id"></th>-->
+<!--                </tr>-->
+
+                <tr>
+                    <th style="display: none">id:</th>
+                    <th><input type="hidden" th:field="*{authorities.username}" class="form-control mb-4 col-4" style="display: none; " placeholder="id"></th>
+                </tr>
+
+                <tr style="max-height: 20px">
+                    <th>Username:</th>
+                    <th ><input type="text" th:field="*{username}"  style="border-radius: 9px; float: left; width: 300px; height: 35px" placeholder="Username"></th>
+                </tr>
+                <tr style="max-height: 20px">
+                    <th>Password:</th>
+                    <th ><input type="text" th:field="*{password}"  style="border-radius: 9px; float: left; width: 300px; height: 35px" placeholder="Password"></th>
+                </tr>
+                <tr>
+                    <th>User role:</th>
+                    <th ><select th:field="*{authorities.authority}" style="width: 300px; height: 35px; border-radius: 6px; float: left; border: black solid 2px" >
+                        <option th:each="role : ${roleList}"
+                                th:text="${role}"
+                                th:value="${role}">
+                        </option>
+                    </select>
+                    </th>
+                </tr>
+            </table>
+            <br> <br>
+
+            <button type="submit" class="btn btn-primary col-2" style="margin-right: 100px; float: left">Save</button>
+
+            <a th:href="@{/users/userList}" class="btn btn-primary col-3" style="float: left">Back to the user list</a>
+        </form>
+    </div>
+        <hr>
+
+    <footer  th:replace="~{fragments/footer :: footer}"></footer>
+
+</body>
+</html>

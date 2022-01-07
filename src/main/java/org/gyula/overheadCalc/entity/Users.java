@@ -1,37 +1,54 @@
 package org.gyula.overheadCalc.entity;
 
+import lombok.extern.slf4j.Slf4j;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Entity
 @Table(name = "users")
-public class Users {
+public class Users implements Serializable {
 
     @Id
-    @Column(name = "username", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private int id;
+
+    @NotNull
+    @Column(name = "username", nullable = false, unique = false)
     private String username;
 
+    @NotNull
     @Column(name = "password")
     private String password;
 
+    @NotNull
     @Column(name = "enabled")
-    private int enabled;
+    private int enabled = 1;
 
-    @OneToMany(mappedBy = "username", cascade = CascadeType.ALL)
-    private List<Authorities> authorities;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "auth_id", referencedColumnName = "id")
+    private Authorities authorities;
 
-    @OneToMany(mappedBy = "userName", cascade = CascadeType.ALL)
-    private List<UserImages> userImages;
+//    @OneToMany(mappedBy = "username")
+//    private List<Authorities> authorities;
+//
+//    @OneToMany(mappedBy = "userName", cascade = CascadeType.ALL)
+//    private List<UserImages> userImages;
 
     public Users() {
     }
 
-    public Users(String username, String password, int enabled, List<Authorities> authorities, List<UserImages> userImages) {
+    public Users(String username, String password, int enabled, Authorities authorities) {
         this.username = username;
         this.password = password;
         this.enabled = enabled;
         this.authorities = authorities;
-        this.userImages = userImages;
     }
 
     //    public Users(String username, String password, int enabled) {
@@ -39,6 +56,24 @@ public class Users {
 //        this.password = password;
 //        this.enabled = enabled;
 //    }
+
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+//    public String getUsername() {
+//        return username;
+//    }
+//
+//    public void setUsername(String username) {
+//        this.username = username;
+//    }
+
 
     public String getUsername() {
         return username;
@@ -64,30 +99,11 @@ public class Users {
         this.enabled = enabled;
     }
 
-    public List<Authorities> getAuthorities() {
+    public Authorities getAuthorities() {
         return authorities;
     }
 
-    public void setAuthorities(List<Authorities> authorities) {
+    public void setAuthorities(Authorities authorities) {
         this.authorities = authorities;
-    }
-
-    public List<UserImages> getUserImages() {
-        return userImages;
-    }
-
-    public void setUserImages(List<UserImages> userImages) {
-        this.userImages = userImages;
-    }
-
-    @Override
-    public String toString() {
-        return "Users{" +
-                "username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", enabled=" + enabled +
-                ", authorities=" + authorities +
-                ", userImages=" + userImages +
-                '}';
     }
 }
