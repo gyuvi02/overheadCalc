@@ -13,7 +13,7 @@
 
 <header th:replace="~{fragments/header :: header(${userName})}"></header>
 
-    <div class="container" style="margin-top: -5%;">
+    <div class="container" style="margin-top: -5%; max-width: 45%; ">
         <h4 th:text="${tenant.lastName == null} ? 'Add new tenant' : 'Update the tenant data'" class="h4 mb-4" style="font-weight: bolder"></h4>
 
         <form action="#"    th:action="@{/tenants/saveTenant}"
@@ -46,9 +46,9 @@
                     <th><input type="text" th:field="*{phone}" class="form-control mb-4 col-4" placeholder="Phone" style="border-radius: 10px"></th>
                 </tr>
             </table>
-            <button type="submit" class="btn btn-primary col-2" style="margin-right: 100px; float: left">Save</button>
+            <button type="submit" class="btn btn-primary col-2" style="margin-left: 25%; float: left">Save</button>
 
-            <a th:href="@{/tenants/tenantList}" class="btn btn-primary col-2" style="float: left">
+            <a th:href="@{/tenants/tenantList}" class="btn btn-primary col-3" style="float: right; margin-right: 25%">
                 Back to the tenant list
             </a>
         </form>

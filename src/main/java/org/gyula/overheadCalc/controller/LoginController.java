@@ -1,6 +1,7 @@
 package org.gyula.overheadCalc.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.gyula.overheadCalc.entity.A_tenant;
 import org.gyula.overheadCalc.entity.Users;
 import org.gyula.overheadCalc.service.UsersService;
 import org.springframework.security.core.Authentication;
@@ -46,6 +47,8 @@ public class LoginController {
 
     @GetMapping("/home")
     public String home(@AuthenticationPrincipal User user, Model model) {
+        Users loggedUser = usersService.findByUserName(getAuthUserName());
+        model.addAttribute("loggedTenant", loggedUser.getTenant());
         log.info("home page called");
         model.addAttribute("myUser", user);
         return "home";

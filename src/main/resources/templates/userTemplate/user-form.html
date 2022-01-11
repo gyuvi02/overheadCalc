@@ -9,7 +9,7 @@
 <body class="d-flex flex-column justify-content-between text-center">
     <header th:replace="~{fragments/header :: header(${userName})}"></header>
 
-    <div class="container" style="max-width: 800px; " >
+    <div class="container" style="max-width: 45%; " >
         <br>
         <h3 th:text="${user.authorities == null} ? 'Add new user' : 'Update the user data'" style="text-align: center; font-weight: bolder; "></h3>
         <br>
@@ -20,8 +20,8 @@
 
             <table class="table table-primary-flatForm table-hover">
                 <colgroup>
-                    <col style="width:30%">
-                    <col style="width:70%">
+                    <col style="width:40%">
+                    <col style="width:60%">
                 </colgroup>
 <!--                <tr>-->
 <!--                    <th style="display: none">id:</th>-->
@@ -51,12 +51,24 @@
                     </select>
                     </th>
                 </tr>
+
+                <tr>
+                <th>Tenant applied to this user name:</th>
+                <th ><select th:field="*{tenant.id}" style="width: 200px; border-radius: 10px; float: left" >
+                    <option th:each="myTenant : ${tenantList}"
+                            th:text="${myTenant.lastName}"
+                            th:value="${myTenant.id}">
+                    </option>
+                </select>
+                </th>
+                </tr>
+
             </table>
             <br> <br>
 
-            <button type="submit" class="btn btn-primary col-2" style="margin-right: 100px; float: left">Save</button>
+            <button type="submit" class="btn btn-primary col-2" style="margin-left: 25%; float: left">Save</button>
 
-            <a th:href="@{/users/userList}" class="btn btn-primary col-3" style="float: left">Back to the user list</a>
+            <a th:href="@{/users/userList}" class="btn btn-primary col-3" style="float: right; margin-right: 25%">Back to the user list</a>
         </form>
     </div>
         <hr>

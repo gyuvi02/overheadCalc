@@ -32,9 +32,13 @@
         <a sec:authorize="hasRole('ADMIN')" th:href="@{/users/userList}" class="btn btn-primary">
             The user list
         </a>
-
-
     </div>
+
+    <a th:if="${loggedTenant != null}"
+       th:href="@{/flats/addOverheadsData}" class="btn btn-primary">
+        Overheads
+    </a>
+
     <br>
     <div  style="text-align: left">
 

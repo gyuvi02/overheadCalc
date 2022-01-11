@@ -32,6 +32,9 @@ public class A_tenant {
     @OneToMany(mappedBy = "theTenant")
     private List<A_flat> flats;
 
+    @OneToOne(mappedBy = "tenant")
+    private Users user;
+
     public A_tenant() {
     }
 
@@ -43,12 +46,13 @@ public class A_tenant {
 //    }
 
 
-    public A_tenant(@NonNull String firstName, @NonNull String lastName, @NonNull String email, String phone, List<A_flat> flats) {
+    public A_tenant(@NonNull String firstName, @NonNull String lastName, @NonNull String email, String phone, List<A_flat> flats, Users user) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phone = phone;
         this.flats = flats;
+        this.user = user;
     }
 
     public int getId() {
@@ -98,6 +102,8 @@ public class A_tenant {
     public void setFlats(List<A_flat> flats) {
         this.flats = flats;
     }
+
+
 
     @Override
     public String toString() {

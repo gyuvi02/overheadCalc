@@ -5,11 +5,13 @@
 
 <header th:fragment="header(imageUser)" style="color: white; background: #0d6efd">
             <nav class="ccsticky-nav">
-                <a style="float: left; width: 5%" th:if="${#httpServletRequest.requestURI != '/login' and #httpServletRequest.requestURI != '/'}">
+                <a style="float: left; width: 5%"
+                   th:if="${#httpServletRequest.requestURI != '/login' and #httpServletRequest.requestURI != '/'}">
                     <img  class="usrPhoto" th:src="${'/userImages/' + imageUser + '.jpg'}"
                           width="70px" height="70px" onerror="this.onerror=null;this.src='/userImages/empty.jpg';">
                 </a>
-                <a th:if="${#httpServletRequest.requestURI != '/login' and #httpServletRequest.requestURI != '/'}" th:text="${imageUser}" style="float: left; width: 5%; font-weight: bolder; margin-top:25px"></a>
+                <a th:if="${#httpServletRequest.requestURI != '/login' and #httpServletRequest.requestURI != '/'}"
+                   th:text="${imageUser}" style="float: left; width: 5%; font-weight: bolder; margin-top:25px"></a>
                 <ul style="width: 80%; margin-left: 8%">
                     <li th:if="${#httpServletRequest.requestURI != '/login' and #httpServletRequest.requestURI != '/'}">
                         <a th:href="@{/logout}" >Log out</a></li>

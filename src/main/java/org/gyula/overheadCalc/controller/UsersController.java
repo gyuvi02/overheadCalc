@@ -1,18 +1,25 @@
 package org.gyula.overheadCalc.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.gyula.overheadCalc.entity.A_tenant;
 import org.gyula.overheadCalc.entity.Users;
 import org.gyula.overheadCalc.service.AuthoritiesService;
+import org.gyula.overheadCalc.service.TenantService;
 import org.gyula.overheadCalc.service.UsersService;
+import org.gyula.overheadCalc.util.DoValidate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.*;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @Controller
@@ -20,7 +27,7 @@ import java.util.List;
 public class UsersController {
 
 //    FlatService flatService;
-//    TenantService tenantService;
+    TenantService tenantService;
     UsersService usersService;
     AuthoritiesService authoritiesService;
     List<String> roleList = Arrays.asList("ROLE_USER", "ROLE_ADMIN");
@@ -28,7 +35,8 @@ public class UsersController {
 
     BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    public UsersController(UsersService usersService, AuthoritiesService authoritiesService) {
+    public UsersController(TenantService tenantService, UsersService usersService, AuthoritiesService authoritiesService) {
+        this.tenantService = tenantService;
         this.usersService = usersService;
         this.authoritiesService = authoritiesService;
     }
@@ -48,14 +56,27 @@ public class UsersController {
         model.addAttribute("roleList", roleList);
         model.addAttribute("userName", getAuthUserName());
         model.addAttribute("user", newUser);
+        model.addAttribute("tenantList", tenantService.findAll());
         log.info("Adding new user data, calling the form page");
         return "userTemplate/user-form";
     }
 
     @PostMapping("/saveUser")
-    public String saveUser(@ModelAttribute("username") Users newUser, Model model) {
+    public String saveUser(@ModelAttribute("username") @Valid Users newUser, Model model, BindingResult bindingResult) {
+        A_tenant newTenant = null;
         newUser.setPassword("{bcrypt}" + passwordEncoder.encode(newUser.getPassword()));
         newUser.getAuthorities().setUsername(newUser.getUsername());
+        // if I do not add tenant (actually add dummy tenant, I want to keep the tenant field empty
+        // otherwise I would have several 1 ids in the tenant_id column, but it's a OneToOne connection
+        if (newUser.getTenant().getId() == 1) {
+            newTenant= null;
+        }else {
+            newTenant = tenantService.findById(newUser.getTenant().getId());
+        }
+        newUser.setTenant(newTenant);
+        if (bindingResult.hasErrors()) {
+            return "home";
+        }
         usersService.save(newUser);
         model.addAttribute("userName", getAuthUserName());
         model.addAttribute("userList", usersService.findAll());
@@ -86,6 +107,15 @@ public class UsersController {
     private String getAuthUserName() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return authentication.getName();
+    }
+
+    @GetMapping("/addOverheadsData")
+    public String addOverheadsData(Model model) {
+        model.addAttribute("userName", getAuthUserName());
+        model.addAttribute("myUser", usersService.findByUserName(getAuthUserName()));
+//        model.addAttribute("tenantList", tenantService.findAll());
+        log.info("Adding new overheads data, calling the form page");
+        return "overheadsTemplate/addOverheads-form";
     }
 
 }
