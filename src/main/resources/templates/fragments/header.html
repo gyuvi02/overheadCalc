@@ -17,7 +17,7 @@
                         <a th:href="@{/logout}" >Log out</a></li>
                     <li th:if="${#httpServletRequest.requestURI != '/login' and #httpServletRequest.requestURI != '/'
                         and #httpServletRequest.requestURI != '/home'}">
-                        <a th:href="@{/home}" >
+                        <a th:href="@{/me/home}" >
                             Your home page
                         </a>
 

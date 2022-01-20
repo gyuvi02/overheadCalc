@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<link href="data:image/x-icon;" rel="shortcut icon" />
+
+<head>
+    <meta charset="UTF-8">
+<!--    <title th:if="${tenant.id == null}">Add new tenant</title>-->
+    <title th:text="${myUser.tenant.lastName} + ' Overheads'" class="h4 mb-4"></title>
+
+    <link rel="stylesheet" th:href="@{/css/strap.css}">
+</head>
+<body class="d-flex flex-column justify-content-between text-center">
+
+<header th:replace="~{fragments/header :: header(${userName})}"></header>
+
+    <div class="container" style="margin-top: -5%; max-width: 45%; ">
+        <h4 th:text="'Overheads data for the flat: ' + ${overheadsData.}" class="h4 mb-4" style="font-weight: bolder"></h4>
+
+        <form action="#"    th:action="@{/me/saveOverheads}"
+                            th:object="${overheadsData}" method="post">
+            <table class="table table-primary-flatForm table-hover "   >
+                <colgroup>
+                    <col style="width:35%">
+                    <col style="width:65%">
+                </colgroup>
+                <tr>
+                    <td style="display: none"></td>
+                    <td><input type="hidden" th:field="*{id}" class="form-control mb-4 col-4" style="display: none; " placeholder="id"></td>
+                </tr>
+                <tr>
+                    <td>Previous gas meter</td>
+                    <td th:text = "${myUser.tenant.flats.get(0).gas_meters[#lists.size(myUser.tenant.flats.get(0).gas_meters) - 1].gas_meter}" class="form-control col-2" style="vertical-align: middle"></td>
+                </tr>
+                <tr>
+                    <td>Actual gas meter</td>
+                    <td><input type="number" th:value="${myUser.tenant.flats.get(0).gas_meters[#lists.size(myUser.tenant.flats.get(0).gas_meters) - 1].gas_meter}"
+                               th:fields= "*{tenant.flats.get(0).gas_meters}" class="form-control col-2"></td>
+                </tr>
+                <tr>
+                    <td>Previous electricity meter</td>
+                    <td th:text = "${myUser.tenant.flats.get(0).electricity_meters[#lists.size(myUser.tenant.flats.get(0).electricity_meters) - 1].electricity_meter}"
+                        class="form-control col-2" style="vertical-align: middle"></td>
+                </tr>
+                <tr>
+                    <td>Actual electricity meter</td>
+                    <td><input type="number" th:value="${myUser.tenant.flats.get(0).electricity_meters[#lists.size(myUser.tenant.flats.get(0).electricity_meters) - 1].electricity_meter}"
+                               th:fields= "*{tenant.flats.get(0).electricity_meters}" class="form-control col-2"></td>
+                </tr>
+                <tr>
+                    <td>Previous water meter</td>
+                    <td th:text = "${myUser.tenant.flats.get(0).water_meters[#lists.size(myUser.tenant.flats.get(0).water_meters) - 1].water_meter}"
+                        class="form-control col-2" style="vertical-align: middle"></td>
+                </tr>
+                <tr>
+                    <td>Actual water meter</td>
+                    <td><input type="number" th:value="${myUser.tenant.flats.get(0).water_meters[#lists.size(myUser.tenant.flats.get(0).water_meters) - 1].water_meter}"
+                               th:fields= "*{tenant.flats.get(0).water_meters}" class="form-control col-2"></td>
+                </tr>
+<!--                <tr>-->
+<!--                    <th>Last name:</th>-->
+<!--                    <th><input type="text" th:field="*{lastName}" class="form-control mb-4 col-4" style="border-radius: 10px" placeholder="Last name"></th>-->
+<!--                </tr>-->
+<!--                <tr>-->
+<!--                    <th>Email:</th>-->
+<!--                    <th><input type="text" th:field="*{email}" class="form-control mb-4 col-4" style="border-radius: 10px" placeholder="Email"></th>-->
+<!--                </tr>-->
+<!--                <tr>-->
+<!--                    <th>Phone:</th>-->
+<!--                    <th><input type="text" th:field="*{phone}" class="form-control mb-4 col-4" placeholder="Phone" style="border-radius: 10px"></th>-->
+<!--                </tr>-->
+            </table>
+            <button type="submit" class="btn btn-primary col-2" style="margin-left: 25%; float: left">Save</button>
+
+            <a th:href="@{/me/home}" class="btn btn-primary col-2" style="float: right; margin-right: 25%">
+                Cancel
+            </a>
+        </form>
+
+    </div>
+
+    <footer  th:replace="~{fragments/footer :: footer}"></footer>
+
+</body>
+</html>

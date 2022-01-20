@@ -6,20 +6,17 @@ import org.gyula.overheadCalc.entity.Users;
 import org.gyula.overheadCalc.service.AuthoritiesService;
 import org.gyula.overheadCalc.service.TenantService;
 import org.gyula.overheadCalc.service.UsersService;
-import org.gyula.overheadCalc.util.DoValidate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.*;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
 @Slf4j
 @Controller
@@ -109,13 +106,5 @@ public class UsersController {
         return authentication.getName();
     }
 
-    @GetMapping("/addOverheadsData")
-    public String addOverheadsData(Model model) {
-        model.addAttribute("userName", getAuthUserName());
-        model.addAttribute("myUser", usersService.findByUserName(getAuthUserName()));
-//        model.addAttribute("tenantList", tenantService.findAll());
-        log.info("Adding new overheads data, calling the form page");
-        return "overheadsTemplate/addOverheads-form";
-    }
 
 }

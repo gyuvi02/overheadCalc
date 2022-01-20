@@ -3,6 +3,7 @@ package org.gyula.overheadCalc.entity;
 import lombok.NonNull;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name="a_flat")
@@ -36,10 +37,27 @@ public class A_flat {
     private int tenantId = 1; // tenant id = 1 is a dummy tenant to avoid constraint violation
 //    private int tenantId;
 
+    @Column(name = "gas_unit_price")
+    private double gasUnitPrice;
+
+    @Column(name = "electricity_unit_price")
+    private double electricityUnitPrice;
+
+    @Column(name = "water_unit_price")
+    private double waterUnitPrice;
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "tenant_id", insertable = false, updatable = false)
     private A_tenant theTenant;
 
+    @OneToMany(mappedBy = "a_flat", cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.PERSIST})
+    private List<A_gas_meter> gas_meters;
+
+    @OneToMany(mappedBy = "a_flat", cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.PERSIST})
+    private List<A_electricity_meter> electricity_meters;
+
+    @OneToMany(mappedBy = "a_flat", cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.PERSIST})
+    private List<A_water_meter> water_meters;
 
     public A_flat() {
     }
@@ -56,7 +74,8 @@ public class A_flat {
 //    }
 
     public A_flat(@NonNull String address, int rent, int associateFee, int gasBasicPrice, int electricityBasicPrice,
-                  int waterBasicPrice, int tenantId, A_tenant theTenant) {
+                  int waterBasicPrice, int tenantId, A_tenant theTenant, double gasUnitPrice,
+                  double electricityUnitPrice, double waterUnitPrice) {
         this.address = address;
         this.rent = rent;
         this.associateFee = associateFee;
@@ -65,6 +84,9 @@ public class A_flat {
         this.waterBasicPrice = waterBasicPrice;
         this.tenantId = tenantId;
         this.theTenant = theTenant;
+        this.gasUnitPrice = gasUnitPrice;
+        this.electricityUnitPrice = electricityUnitPrice;
+        this.waterUnitPrice = waterUnitPrice;
     }
 
     public int getId() {
@@ -137,6 +159,54 @@ public class A_flat {
 
     public void setTheTenant(A_tenant theTenant) {
         this.theTenant = theTenant;
+    }
+
+    public double getGasUnitPrice() {
+        return gasUnitPrice;
+    }
+
+    public void setGasUnitPrice(double gasUnitPrice) {
+        this.gasUnitPrice = gasUnitPrice;
+    }
+
+    public double getElectricityUnitPrice() {
+        return electricityUnitPrice;
+    }
+
+    public void setElectricityUnitPrice(double electricityUnitPrice) {
+        this.electricityUnitPrice = electricityUnitPrice;
+    }
+
+    public double getWaterUnitPrice() {
+        return waterUnitPrice;
+    }
+
+    public void setWaterUnitPrice(double waterUnitPrice) {
+        this.waterUnitPrice = waterUnitPrice;
+    }
+
+    public List<A_gas_meter> getGas_meters() {
+        return gas_meters;
+    }
+
+    public void setGas_meters(List<A_gas_meter> gas_meters) {
+        this.gas_meters = gas_meters;
+    }
+
+    public List<A_electricity_meter> getElectricity_meters() {
+        return electricity_meters;
+    }
+
+    public void setElectricity_meters(List<A_electricity_meter> electricity_meters) {
+        this.electricity_meters = electricity_meters;
+    }
+
+    public List<A_water_meter> getWater_meters() {
+        return water_meters;
+    }
+
+    public void setWater_meters(List<A_water_meter> water_meters) {
+        this.water_meters = water_meters;
     }
 
     @Override

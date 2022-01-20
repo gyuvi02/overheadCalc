@@ -3,8 +3,7 @@
 <link href="data:image/x-icon;" rel="shortcut icon" />
 <head>
     <meta charset="UTF-8">
-<!--    <title th:text="${flat.getAddress() == 1} ? 'Add new flat' : 'Update the flat data'"></title>-->
-<!--    <title th:if="${param.query == 0} ? 'Add new flat' : 'Update the flat data'"></title>-->
+    <title th:text="${flat.getAddress() == null} ? 'Add new flat' : 'Update the flat data'"></title>
 
     <link rel="stylesheet" th:href="@{/css/strap.css}">
 </head>
@@ -50,6 +49,18 @@
                 <tr>
                     <th>Water basic price:</th>
                     <th><input type="number" th:field="*{waterBasicPrice}" class="form-control mb-4 col-4" style="border-radius: 10px" placeholder="Ft"></th>
+                </tr>
+                <tr>
+                    <th>Gas unit price:</th>
+                    <th><input type="number" th:field="*{gasUnitPrice}" class="form-control mb-4 col-4" style="border-radius: 10px" placeholder="Ft"></th>
+                </tr>
+                <tr>
+                    <th>Electricity unit price:</th>
+                    <th><input type="number" th:field="*{electricityUnitPrice}" class="form-control mb-4 col-4" style="border-radius: 10px" placeholder="Ft"></th>
+                </tr>
+                <tr>
+                    <th>Water unit price:</th>
+                    <th><input type="number" th:field="*{waterUnitPrice}" class="form-control mb-4 col-4" style="border-radius: 10px" placeholder="Ft"></th>
                 </tr>
                 <tr>
                     <th>Tenant name:</th>

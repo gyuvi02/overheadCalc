@@ -1,8 +1,9 @@
 package org.gyula.overheadCalc.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.gyula.overheadCalc.entity.A_tenant;
+import org.gyula.overheadCalc.entity.A_gas_meter;
 import org.gyula.overheadCalc.entity.Users;
+import org.gyula.overheadCalc.service.GasService;
 import org.gyula.overheadCalc.service.UsersService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -14,16 +15,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Locale;
 
 @Slf4j
 @Controller
 public class LoginController {
 
     UsersService usersService;
+    GasService gasService;
 
-    public LoginController(UsersService usersService) {
+    A_gas_meter newGas = new A_gas_meter(12345);
+
+    public LoginController(UsersService usersService, GasService gasService) {
         this.usersService = usersService;
+        this.gasService = gasService;
     }
 
     @GetMapping("/")
@@ -45,14 +49,7 @@ public class LoginController {
         return "fancy-login";
     }
 
-    @GetMapping("/home")
-    public String home(@AuthenticationPrincipal User user, Model model) {
-        Users loggedUser = usersService.findByUserName(getAuthUserName());
-        model.addAttribute("loggedTenant", loggedUser.getTenant());
-        log.info("home page called");
-        model.addAttribute("myUser", user);
-        return "home";
-    }
+
 
     //add mapping for /access-denied
     @GetMapping("/accessDenied")

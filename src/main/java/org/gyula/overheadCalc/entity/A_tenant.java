@@ -1,10 +1,14 @@
 package org.gyula.overheadCalc.entity;
 
+import lombok.Getter;
 import lombok.NonNull;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
 
+@Getter
+@Setter
 @Entity
 @Table(name="a_tenant")
 public class A_tenant {

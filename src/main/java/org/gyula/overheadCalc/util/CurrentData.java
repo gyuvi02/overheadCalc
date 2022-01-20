@@ -1,177 +1,121 @@
 package org.gyula.overheadCalc.util;
 
-import java.util.Date;
+import lombok.Getter;
+import lombok.Setter;
+import org.gyula.overheadCalc.entity.A_electricity_meter;
+import org.gyula.overheadCalc.entity.A_flat;
+import org.gyula.overheadCalc.entity.A_gas_meter;
+import org.gyula.overheadCalc.entity.A_water_meter;
+import org.gyula.overheadCalc.service.FlatService;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
+@Getter
+@Setter
 public class CurrentData {
 
-    private Date date;
+    FlatService flatService;
+
+    private LocalDateTime date = LocalDateTime.now();
+
+    private String tenantFirstName;
+    private String tenantLastName;
 
     private double gasMeterLatest;
     private double gasMeterNow;
-    private double gasPrice;
+    private double gasUnitPrice;
     private double gasBasicPrice;
 
     private double electricityMeterLatest;
     private double electricityMeterNow;
-    private double electricityPrice;
+    private double electricityUnitPrice;
     private double electricityBasicPrice;
 
     private double waterMeterLatest;
     private double waterMeterNow;
-    private double waterPrice;
+    private double waterUnitPrice;
     private double waterBasicPrice;
 
     private int rent;
-    private int associate_fee;
+    private int associateFee;
 
     private double finalSum;
 
-    public CurrentData(Date date, double gasMeterLatest, double gasMeterNow, double gasPrice, double gasBasicPrice,
-                       double electricityMeterLatest, double electricityMeterNow, double electricityPrice,
-                       double electricityBasicPrice, double waterMeterLatest, double waterMeterNow, double waterPrice,
-                       double waterBasicPrice, int rent, int associate_fee) {
+    public CurrentData() {
+    }
+
+    public CurrentData(String tenantFirstName, String tenantLastName, LocalDateTime date, double gasMeterLatest, double gasMeterNow, double gasUnitPrice, double gasBasicPrice,
+                       double electricityMeterLatest, double electricityMeterNow, double electricityUnitPrice,
+                       double electricityBasicPrice, double waterMeterLatest, double waterMeterNow, double waterUnitPrice,
+                       double waterBasicPrice, int rent, int associateFee) {
+        this.tenantFirstName = tenantFirstName;
+        this.tenantLastName = tenantLastName;
         this.date = date;
         this.gasMeterLatest = gasMeterLatest;
         this.gasMeterNow = gasMeterNow;
-        this.gasPrice = gasPrice;
+        this.gasUnitPrice = gasUnitPrice;
         this.gasBasicPrice = gasBasicPrice;
         this.electricityMeterLatest = electricityMeterLatest;
         this.electricityMeterNow = electricityMeterNow;
-        this.electricityPrice = electricityPrice;
+        this.electricityUnitPrice = electricityUnitPrice;
         this.electricityBasicPrice = electricityBasicPrice;
         this.waterMeterLatest = waterMeterLatest;
         this.waterMeterNow = waterMeterNow;
-        this.waterPrice = waterPrice;
+        this.waterUnitPrice = waterUnitPrice;
         this.waterBasicPrice = waterBasicPrice;
         this.rent = rent;
-        this.associate_fee = associate_fee;
+        this.associateFee = associateFee;
     }
 
-    public Date getDate() {
-        return date;
+    public CurrentData createData(A_flat flat) {
+        double gasMeterLast = 0;
+        double electricityMeterLast = 0;
+        double waterMeterLast = 0;
+
+        List<A_gas_meter> gasMeter = flat.getGas_meters();
+        List<A_electricity_meter> electricityMeter = flat.getElectricity_meters();
+        List<A_water_meter> waterMeter = flat.getWater_meters();
+
+        tenantFirstName = flat.getTheTenant().getFirstName();
+        tenantLastName = flat.getTheTenant().getLastName();
+        // gas data
+        if (gasMeter.size() < 1) {
+            gasMeterLast = 0;
+        } else {
+            gasMeterLast = gasMeter.get(gasMeter.size() - 1).getGas_meter();
+        }
+        int gasBasicPrice = flat.getGasBasicPrice();
+        double gasUnitPrice = flat.getGasUnitPrice();
+
+        // electricity data
+        if (electricityMeter.size() < 1) {
+            electricityMeterLast = 0;
+        } else {
+            electricityMeterLast = electricityMeter.get(gasMeter.size() - 1).getElectricity_meter();
+        }
+        int electricityBasicPrice = flat.getElectricityBasicPrice();
+        double electricityUnitPrice = flat.getElectricityUnitPrice();
+
+        // water data
+        if (waterMeter.size() < 1) {
+            waterMeterLast = 0;
+        } else {
+            waterMeterLast = waterMeter.get(gasMeter.size() - 1).getWater_meter();
+        }
+        int waterBasicPrice = flat.getWaterBasicPrice();
+        double waterUnitPrice = flat.getWaterUnitPrice();
+
+        int rent = flat.getRent();
+        int associateFee = flat.getAssociateFee();
+
+//        for (A_water_meter emeter : flat.getWater_meters()) {
+//            System.out.println(emeter.getWater_meter());
+//        }
+
+
+        return null;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
-    }
 
-    public double getGasMeterLatest() {
-        return gasMeterLatest;
-    }
-
-    public void setGasMeterLatest(double gasMeterLatest) {
-        this.gasMeterLatest = gasMeterLatest;
-    }
-
-    public double getGasMeterNow() {
-        return gasMeterNow;
-    }
-
-    public void setGasMeterNow(double gasMeterNow) {
-        this.gasMeterNow = gasMeterNow;
-    }
-
-    public double getGasPrice() {
-        return gasPrice;
-    }
-
-    public void setGasPrice(double gasPrice) {
-        this.gasPrice = gasPrice;
-    }
-
-    public double getGasBasicPrice() {
-        return gasBasicPrice;
-    }
-
-    public void setGasBasicPrice(double gasBasicPrice) {
-        this.gasBasicPrice = gasBasicPrice;
-    }
-
-    public double getElectricityMeterLatest() {
-        return electricityMeterLatest;
-    }
-
-    public void setElectricityMeterLatest(double electricityMeterLatest) {
-        this.electricityMeterLatest = electricityMeterLatest;
-    }
-
-    public double getElectricityMeterNow() {
-        return electricityMeterNow;
-    }
-
-    public void setElectricityMeterNow(double electricityMeterNow) {
-        this.electricityMeterNow = electricityMeterNow;
-    }
-
-    public double getElectricityPrice() {
-        return electricityPrice;
-    }
-
-    public void setElectricityPrice(double electricityPrice) {
-        this.electricityPrice = electricityPrice;
-    }
-
-    public double getElectricityBasicPrice() {
-        return electricityBasicPrice;
-    }
-
-    public void setElectricityBasicPrice(double electricityBasicPrice) {
-        this.electricityBasicPrice = electricityBasicPrice;
-    }
-
-    public double getWaterMeterLatest() {
-        return waterMeterLatest;
-    }
-
-    public void setWaterMeterLatest(double waterMeterLatest) {
-        this.waterMeterLatest = waterMeterLatest;
-    }
-
-    public double getWaterMeterNow() {
-        return waterMeterNow;
-    }
-
-    public void setWaterMeterNow(double waterMeterNow) {
-        this.waterMeterNow = waterMeterNow;
-    }
-
-    public double getWaterPrice() {
-        return waterPrice;
-    }
-
-    public void setWaterPrice(double waterPrice) {
-        this.waterPrice = waterPrice;
-    }
-
-    public double getWaterBasicPrice() {
-        return waterBasicPrice;
-    }
-
-    public void setWaterBasicPrice(double waterBasicPrice) {
-        this.waterBasicPrice = waterBasicPrice;
-    }
-
-    public int getRent() {
-        return rent;
-    }
-
-    public void setRent(int rent) {
-        this.rent = rent;
-    }
-
-    public int getAssociate_fee() {
-        return associate_fee;
-    }
-
-    public void setAssociate_fee(int associate_fee) {
-        this.associate_fee = associate_fee;
-    }
-
-    public double getFinalSum() {
-        return finalSum;
-    }
-
-    public void setFinalSum(double finalSum) {
-        this.finalSum = finalSum;
-    }
 }

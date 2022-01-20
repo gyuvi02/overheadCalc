@@ -11,6 +11,7 @@ import javax.persistence.Query;
 import java.util.List;
 
 @Component
+@Transactional
 public class FlatServiceImpl implements FlatService{
 
     @PersistenceContext
