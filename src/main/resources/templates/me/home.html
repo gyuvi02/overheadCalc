@@ -34,10 +34,21 @@
         </a>
     </div>
 
-    <a th:if="${loggedTenant != null}"
-       th:href="@{/me/addOverheadsData}" class="btn btn-primary">
-        Overheads
-    </a>
+    <div th:if="${loggedTenant != null}" >
+        <h4 style="margin-bottom: 30px">Here you can record your overheads data</h4>
+
+        <a th:href="@{/me/recordGas}" class="btn btn-primary">
+            Gas
+        </a>
+
+        <a th:href="@{/me/recordElectricity}" class="btn btn-primary" style="margin-left: 20px">
+            Electricity
+        </a>
+
+        <a th:href="@{/me/recordWater}" class="btn btn-primary" style="margin-left: 20px">
+            Water
+        </a>
+    </div>
 
     <br>
     <div  style="text-align: left">
