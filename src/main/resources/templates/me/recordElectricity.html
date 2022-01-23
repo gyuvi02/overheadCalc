@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<link href="data:image/x-icon;" rel="shortcut icon" />
+
+<head>
+    <meta charset="UTF-8">
+<!--    <title th:if="${tenant.id == null}">Add new tenant</title>-->
+    <title th:text="${userName} + ' - gas data'" class="h4 mb-4"></title>
+
+    <link rel="stylesheet" th:href="@{/css/strap.css}">
+</head>
+<body class="d-flex flex-column justify-content-between text-center">
+
+<header th:replace="~{fragments/header :: header(${userName})}"></header>
+
+    <div class="container" style="margin-top: -5%; max-width: 35%; ">
+        <h4 th:text="'Record electricity data for the flat' " class="h4 mb-4" style="font-weight: bolder"></h4>
+
+        <form action="#"    th:action="@{/me/saveElectricityData}"
+                            th:object="${electricityMeter}" method="post">
+
+            <table class="table table-primary-flatForm table-hover "   >
+                <colgroup>
+                    <col style="width:40%">
+                    <col style="width:60%">
+                </colgroup>
+
+                <tr>
+                    <th>Previous electricity meter</th>
+                    <td th:text = "${latestElectricityMeter.electricity_meter}" class="form-control col-2" style="vertical-align: middle"></td>
+                </tr>
+                <tr>
+                    <th>Actual electricity meter</th>
+                    <td><input type="number" th:field= "*{electricity_meter}" class="form-control col-2"></td>
+                </tr>
+
+            </table>
+            <div>
+                <button type="submit" class="btn btn-primary col-2" style="margin-left: 25%; float: left">Save</button>
+                <a th:href="@{/me/home}" class="btn btn-primary col-2" style="float: right; margin-right: 25%">Cancel</a>
+            </div>
+
+            <br>
+            <div>
+                <h5 style="margin-top: 70px; margin-bottom: 20px">Record others</h5>
+                <a th:href="@{/me/recordGas}" class="btn btn-primary col-2" style="margin-right: 20px">Gas</a>
+                <a th:href="@{/me/recordWater}" class="btn btn-primary col-2" >Water</a>
+            </div>
+
+        </form>
+
+    </div>
+
+    <footer  th:replace="~{fragments/footer :: footer}"></footer>
+
+</body>
+</html>
