@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns: th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5" xmlns:th="http://www.w3.org/1999/html">
+<link href="data:image/x-icon;" rel="shortcut icon" />
+<link rel="stylesheet" th:href="@{/css/strap.css}">
+<head>
+    <meta charset="UTF-8">
+    <title>Error with the new tenant</title>
+</head>
+<body class="d-flex flex-column  text-center" style="padding-top: 200px">
+
+    <header th:replace="~{fragments/header :: header(${userName})}"></header>
+    <div>
+        <h3 th:text="'OOOOps, something went wrong'" style="text-align: center; font-weight: bolder"></h3>
+        <br>
+        <h4 th:text="${tenant.lastName}"></h4>
+        <br>
+        <p th:each="error : ${errorList}">
+            <a th:text="'- ' + ${error.getDefaultMessage}" style="font-weight: bolder; font-size: larger"></a>
+        </p>
+
+        <a th:href="@{/tenants/addTenant}" class="btn btn-primary mb-3" style="margin-top: 50px">
+            Try again
+        </a>
+
+    </div>
+</body>
+</html>

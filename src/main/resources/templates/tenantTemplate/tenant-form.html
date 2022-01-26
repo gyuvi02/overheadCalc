@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
 <!--    <title th:if="${tenant.id == null}">Add new tenant</title>-->
-    <title th:text="${tenant.lastName == null} ? 'Add new tenant' : 'Update the tenant data'" class="h4 mb-4"></title>
+<!--    <title th:text="${tenant.lastName == null} ? 'Add new tenant' : 'Update the tenant data'" class="h4 mb-4"></title>-->
 
     <link rel="stylesheet" th:href="@{/css/strap.css}">
 </head>
@@ -28,6 +28,7 @@
                 <tr>
                     <th style="display: none">id:</th>
                     <th><input type="hidden" th:field="*{id}" class="form-control mb-4 col-4" style="display: none; " placeholder="id"></th>
+
                 </tr>
                 <tr>
                     <th>First name:</th>

@@ -9,7 +9,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @Slf4j
 @Controller
@@ -44,8 +47,19 @@ public class FlatController {
         return "flatTemplate/flat-form";
     }
 
+    @GetMapping("flat-error")
+    public String flatError(@RequestParam("errorList") BindingResult bindingResult, Model model) {
+        model.addAttribute("errorList", bindingResult.getAllErrors());
+        model.addAttribute("username", getAuthUserName());
+        return "flatTemplate/flat-error";
+    }
+
     @PostMapping("/saveFlat")
-    public String saveFlat(@ModelAttribute("flat") A_flat newFlat, Model model) {
+    public String saveFlat(@Valid @ModelAttribute("newFlat") A_flat newFlat, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            flatError(bindingResult, model);
+            return "flatTemplate/flat-error";
+        }
         flatService.save(newFlat);
         model.addAttribute("userName", getAuthUserName());
         log.info("Saved the new flat: " + newFlat.getAddress());

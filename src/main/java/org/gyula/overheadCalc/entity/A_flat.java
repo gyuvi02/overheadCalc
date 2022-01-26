@@ -3,11 +3,13 @@ package org.gyula.overheadCalc.entity;
 import lombok.NonNull;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @Table(name="a_flat")
-public class A_flat {
+public class A_flat implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,21 +17,26 @@ public class A_flat {
     private int id;
 
     @Column(name = "address")
-    @NonNull
+    @Size(min = 10, message = "The address should be longer")
     private String address;
 
+    @PositiveOrZero(message = "The rent should be a positive number")
     @Column(name = "rent")
     private int rent;
 
+    @PositiveOrZero(message = "The associate fee should be a positive number")
     @Column(name = "associate_fee")
     private int associateFee;
 
+    @PositiveOrZero(message = "The basic gas price should be a positive number")
     @Column(name = "gas_basic_price")
     private int gasBasicPrice;
 
+    @PositiveOrZero(message = "The basic electricity price should be a positive number")
     @Column(name = "electricity_basic_price")
     private int electricityBasicPrice;
 
+    @PositiveOrZero(message = "The basic water price should be a positive number")
     @Column(name = "water_basic_price")
     private int waterBasicPrice;
 
@@ -37,12 +44,15 @@ public class A_flat {
     private int tenantId = 1; // tenant id = 1 is a dummy tenant to avoid constraint violation
 //    private int tenantId;
 
+    @PositiveOrZero(message = "The gas unit price should be a positive number")
     @Column(name = "gas_unit_price")
     private double gasUnitPrice;
 
+    @PositiveOrZero(message = "The electricity unit price should be a positive number")
     @Column(name = "electricity_unit_price")
     private double electricityUnitPrice;
 
+    @PositiveOrZero(message = "The water unit price should be a positive number")
     @Column(name = "water_unit_price")
     private double waterUnitPrice;
 
