@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns: th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5" xmlns:th="http://www.w3.org/1999/html">
+<link href="data:image/x-icon;" rel="shortcut icon" />
+<link rel="stylesheet" th:href="@{/css/strap.css}">
+<head>
+    <meta charset="UTF-8">
+    <title>Error with the overheads data</title>
+</head>
+<body class="d-flex flex-column justify-content-between text-center">
+
+    <header th:replace="~{fragments/header :: header(${username})}"></header>
+    <div class="container" style="max-width: 45%; ">
+        <h3 th:text="'OOOOps, something went wrong'" style="text-align: center; font-weight: bolder"></h3>
+        <br>
+        <br>
+        <p th:each="error : ${errorList}">
+            <a th:text="'- ' + ${error.getDefaultMessage}" style="font-weight: bolder; font-size: larger"></a>
+        </p>
+
+        <div>
+            <div th:switch="${meter}">
+            <span th:case="'gas'"><a th:href="@{/me/recordGas}" class="btn btn-primary mb-3" style="margin-top: 50px">
+            Try again</a></span>
+                <span th:case="'electricity'"><a th:href="@{/me/recordElectricity}" class="btn btn-primary mb-3" style="margin-top: 50px">
+            Try again</a></span></span>
+                <span th:case="water"><a th:href="@{/me/recordWater}" class="btn btn-primary mb-3" style="margin-top: 50px">
+            Try again</a></span>
+                </span>
+            </div>
+            <a th:href="@{/me/home}" class="btn btn-primary col-2" style="margin-top: 30px">Cancel</a>
+        </div>
+
+        <!--        <a th:href="@{/me/recordGas}" class="btn btn-primary mb-3" style="margin-top: 50px">-->
+<!--            Try again-->
+<!--        </a>-->
+    </div>
+
+    <footer  th:replace="~{fragments/footer :: footer}"></footer>
+
+</body>
+</html>
