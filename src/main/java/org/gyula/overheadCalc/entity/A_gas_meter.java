@@ -7,7 +7,10 @@ import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -24,7 +27,8 @@ public class A_gas_meter {
     private LocalDateTime dateId = LocalDateTime.now();
 
     @Column(name = "meter")
-    @NotNull
+    @NotNull(message = "The gas meter cannot be null")
+    @Positive(message = "The gas meter value should be a positive number")
     private double gas_meter;
 
     @ManyToOne

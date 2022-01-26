@@ -1,8 +1,11 @@
 package org.gyula.overheadCalc.entity;
 
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.validator.constraints.UniqueElements;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
@@ -17,19 +20,15 @@ public class Users implements Serializable {
     @Column(name = "id", nullable = false)
     private int id;
 
-    @NotNull(message = "Please enter username")
-    @NotBlank(message = "Username is mandatory")
-    @Size(min = 4, max = 20, message = "Minimum 4, maximum 20 characters")
-//    @UniqueElements
+    @NotEmpty(message = "Username cannot be empty")
+    @Size(min = 4, max = 20, message = "Username must have minimum 4, maximum 20 characters")
     @Column(name = "username")
     private String username;
 
-    @NotNull(message = "Please enter a password")
-    @Size(min = 6, max = 20)
+    @Size(min = 6, max = 20, message = "Password length should be between 6 and 20 characters")
     @Column(name = "password")
     private String password;
 
-    @NotNull
     @Column(name = "enabled")
     private int enabled = 1;
 

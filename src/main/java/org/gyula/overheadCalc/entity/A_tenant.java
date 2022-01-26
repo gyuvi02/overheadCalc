@@ -3,8 +3,12 @@ package org.gyula.overheadCalc.entity;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
+import org.springframework.format.annotation.NumberFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 @Getter
@@ -19,18 +23,20 @@ public class A_tenant {
     private int id;
 
     @Column(name = "first_name")
-    @NonNull
+    @NotEmpty(message = "First name cannot be empty")
     private String firstName;
 
     @Column(name = "last_name")
-    @NonNull
+    @NotEmpty(message = "Last name cannot be empty")
     private String lastName;
 
     @Column(name = "email")
-    @NonNull
+    @NotEmpty(message = "Email cannot be empty")
+    @Email(message = "Not an acceptable email format")
     private String email;
 
     @Column(name = "phone")
+    @Digits(fraction = 0, integer = 20, message = "Use digits only for the phone number")
     private String phone;
 
     @OneToMany(mappedBy = "theTenant")

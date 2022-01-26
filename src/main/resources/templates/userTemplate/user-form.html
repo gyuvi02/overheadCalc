@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" th:href="@{/css/strap.css}">
+    <title>New user</title>
 </head>
 
 <body class="d-flex flex-column justify-content-between text-center">
@@ -11,10 +12,10 @@
 
     <div class="container" style="max-width: 45%; " >
         <br>
-        <h3 th:text="${user.authorities == null} ? 'Add new user' : 'Update the user data'" style="text-align: center; font-weight: bolder; "></h3>
+        <h3 th:text="'Add new user'" style="text-align: center; font-weight: bolder; "></h3>
         <br>
         <form action="#"    th:action="@{/users/saveUser}"
-                            th:object="${user}"  method="post">
+                            th:object="${newUser}"  method="post">
             <!-- add hidden form field to handle update -->
 <!--            <input type="hidden" th:field="*{username}"/>-->
 
@@ -28,14 +29,18 @@
 <!--                    <th><input type="hidden" th:field="*{authorities.id}" class="form-control mb-4 col-4" style="display: none; " placeholder="id"></th>-->
 <!--                </tr>-->
 
-                <tr>
-                    <th style="display: none">id:</th>
-                    <th><input type="hidden" th:field="*{authorities.username}" class="form-control mb-4 col-4" style="display: none; " placeholder="id"></th>
-                </tr>
+<!--                <tr>-->
+<!--                    <th style="display: none">id:</th>-->
+<!--                    <th><input type="hidden" th:field="*{authorities.username}" class="form-control mb-4 col-4" style="display: none; " placeholder="id">-->
+<!--                    </th>-->
+<!--                </tr>-->
 
                 <tr style="max-height: 20px">
                     <th>Username:</th>
-                    <th ><input type="text" th:field="*{username}"  style="border-radius: 9px; float: left; width: 300px; height: 35px" placeholder="Username"></th>
+                    <td ><input type="text" th:field="*{username}"  style="border-radius: 9px; float: left; width: 300px; height: 35px" placeholder="Username"></td>
+<!--                    <p class="alert alert-warning" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></p>-->
+<!--                    <p th:if="${#fields.hasErrors('username')}">Invalid username</p>-->
+<!--                    <p th:if="${#fields.hasErrors('username')}" th:errorclass="error" th:errors="*{username}" />-->
                 </tr>
                 <tr style="max-height: 20px">
                     <th>Password:</th>
@@ -66,8 +71,8 @@
             </table>
             <br> <br>
 
-            <button type="submit" class="btn btn-primary col-2" style="margin-left: 25%; float: left">Save</button>
-
+<!--            <button type="submit" class="btn btn-primary col-2" style="margin-left: 25%; float: left">Save</button>-->
+            <input type="submit"  class="btn btn-primary col-2" value="Add User">
             <a th:href="@{/users/userList}" class="btn btn-primary col-3" style="float: right; margin-right: 25%">Back to the user list</a>
         </form>
     </div>

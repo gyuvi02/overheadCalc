@@ -9,7 +9,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @Slf4j
 @Controller
@@ -43,8 +46,22 @@ public class TenantController {
         return "tenantTemplate/tenant-form";
     }
 
+    @GetMapping("tenant-error")
+    public String tenantError(@RequestParam("errorList") BindingResult bindingResult, Model model) {
+//        model.addAttribute("tenant", model.getAttribute("tenant"));
+        model.addAttribute("errorList", bindingResult.getAllErrors());
+        model.addAttribute("username", getAuthUserName());
+        addTenant(model);
+        return "tenantTemplate/tenant-error";
+    }
+
     @PostMapping("/saveTenant")
-    public String saveTenant(@ModelAttribute("tenant") A_tenant newTenant, Model model) {
+    public String saveTenant(@Valid @ModelAttribute("newTenant") A_tenant newTenant, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+//            model.addAttribute("tenant", newTenant);
+            tenantError(bindingResult, model);
+            return "tenantTemplate/tenant-error";
+        }
         tenantService.save(newTenant);
         model.addAttribute("userName", getAuthUserName());
         log.info("Saved the new tenant: " + newTenant.getFirstName() + " " + newTenant.getLastName());

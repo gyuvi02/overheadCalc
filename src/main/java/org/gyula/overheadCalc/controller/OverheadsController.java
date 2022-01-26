@@ -2,10 +2,9 @@ package org.gyula.overheadCalc.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.gyula.overheadCalc.entity.*;
-import org.gyula.overheadCalc.service.GasService;
 import org.gyula.overheadCalc.service.OverheadsRecordingService;
 import org.gyula.overheadCalc.service.UsersService;
-import org.gyula.overheadCalc.util.CurrentData;
+import org.gyula.overheadCalc.util.Invoice;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,10 +12,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -28,8 +24,6 @@ public class OverheadsController {
 
     UsersService usersService;
     OverheadsRecordingService overheadsRecordingService;
-//    GasService gasService;
-//    GasService gasService;
 
     public OverheadsController(UsersService usersService, OverheadsRecordingService overheadsRecordingService) {
         this.usersService = usersService;
@@ -61,8 +55,25 @@ public class OverheadsController {
         return "me/recordGas";
     }
 
+    @GetMapping("overheads-error")
+    public String overheadsError(@RequestParam("errorList") BindingResult bindingResult, Model model) {
+        model.addAttribute("errorList", bindingResult.getAllErrors());
+        model.addAttribute("username", getAuthUserName());
+        return "me/overheads-error";
+    }
+
     @PostMapping("/saveGasData")
-    public String saveGas(@ModelAttribute("gasMeter") A_gas_meter gasMeter, Model model) {
+    public String saveGas(@Valid @ModelAttribute("gasMeter")A_gas_meter gasMeter, BindingResult bindingResult, Model model) {
+        List<A_gas_meter> gasList = usersService.findByUserName(getAuthUserName()).getTenant().getFlats().get(0).getGas_meters();
+        A_gas_meter latestGas = gasList.get(gasList.size() - 1);
+        if (gasMeter.getGas_meter() < latestGas.getGas_meter()) {
+            bindingResult.rejectValue("gas_meter", "error.gas_meter", "The new gas meter value cannot be lower than the previous value");
+        }
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("meter", "gas");
+            overheadsError(bindingResult, model);
+            return "me/overheads-error";
+        }
         // need to add the original flat id in a complicated way, first get the id, as I do not put it into the model
 //        int flatId = usersService.findByUserName(getAuthUserName()).getTenant().getFlats().get(0).getId();
         // need to add a new empty flat to the A_gas_meter instance and then add the id
@@ -91,7 +102,18 @@ public class OverheadsController {
     }
 
     @PostMapping("/saveElectricityData")
-    public String saveElectricity(@ModelAttribute("electricityMeter") A_electricity_meter electricityMeter, Model model) {
+    public String saveElectricity(@Valid @ModelAttribute("electricityMeter") A_electricity_meter electricityMeter, BindingResult bindingResult, Model model) {
+        List<A_electricity_meter> electricityList = usersService.findByUserName(getAuthUserName()).getTenant().getFlats().get(0).getElectricity_meters();
+        A_electricity_meter latestElectricity = electricityList.get(electricityList.size() - 1);
+        if (electricityMeter.getElectricity_meter() < latestElectricity.getElectricity_meter()) {
+            bindingResult.rejectValue("electricity_meter", "error.electricity_meter", "The new electricity meter value cannot be lower than the previous value");
+        }
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("meter", "electricity");
+            overheadsError(bindingResult, model);
+            return "me/overheads-error";
+        }
+
         // need to add the original flat id in a complicated way, first get the id, as I do not put it into the model
 //        int flatId = usersService.findByUserName(getAuthUserName()).getTenant().getFlats().get(0).getId();
         // need to add a new empty flat to the A_gas_meter instance and then add the id
@@ -120,7 +142,18 @@ public class OverheadsController {
     }
 
     @PostMapping("/saveWaterData")
-    public String saveWater(@ModelAttribute("electricityMeter") A_water_meter waterMeter, Model model) {
+    public String saveWater(@Valid @ModelAttribute("electricityMeter") A_water_meter waterMeter, BindingResult bindingResult, Model model) {
+        List<A_water_meter> waterList = usersService.findByUserName(getAuthUserName()).getTenant().getFlats().get(0).getWater_meters();
+        A_water_meter latestWater = waterList.get(waterList.size() - 1);
+        if (waterMeter.getWater_meter() < latestWater.getWater_meter()) {
+            bindingResult.rejectValue("water_meter", "error.water_meter", "The new water meter value cannot be lower than the previous value");
+        }
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("meter", "water");
+            overheadsError(bindingResult, model);
+            return "me/overheads-error";
+        }
         // need to add the original flat id in a complicated way, first get the id, as I do not put it into the model
 //        int flatId = usersService.findByUserName(getAuthUserName()).getTenant().getFlats().get(0).getId();
         // need to add a new empty flat to the A_gas_meter instance and then add the id
@@ -134,19 +167,15 @@ public class OverheadsController {
         return "redirect:/me/home";
     }
 
-
-//    @GetMapping("/addOverheadsData")
-//    public String addOverheadsData(Model model) {
-//        Users myUser = usersService.findByUserName(getAuthUserName());
-//        CurrentData currentData = new CurrentData();
-//        currentData.createData(myUser.getTenant().getFlats().get(0));
-//        model.addAttribute("userName", getAuthUserName());
-////        model.addAttribute("myUser", myUser);
-//        model.addAttribute("overheadsData", currentData);
-////        model.addAttribute("tenantList", tenantService.findAll());
-//        log.info("Adding new overheads data, calling the form page");
-//        return "me/addOverheads-form";
-//    }
+    @GetMapping("/invoice")
+    public String printInvoice(Model model) {
+        Invoice invoiceData = new Invoice();
+//        invoiceData = invoiceData.createInvoiceData(usersService.findByUserName(getAuthUserName()).getTenant().getFlats().get(0));
+        model.addAttribute("invoiceData", invoiceData.createInvoiceData(usersService.findByUserName(getAuthUserName()).getTenant().getFlats().get(0)));
+        model.addAttribute("userName", getAuthUserName());
+        log.info("Invoice data created for the flat: " + invoiceData.getAddress());
+        return "/me/invoice";
+    }
 
     private String getAuthUserName() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

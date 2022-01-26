@@ -7,6 +7,7 @@ import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.time.LocalDateTime;
 
 @Getter
@@ -21,7 +22,8 @@ public class A_water_meter {
     private LocalDateTime dateId = LocalDateTime.now();
 
     @Column(name = "meter")
-    @NotNull
+    @NotNull(message = "The water meter cannot be null")
+    @Positive(message = "The water meter value should be a positive number")
     private double water_meter;
 
     @ManyToOne

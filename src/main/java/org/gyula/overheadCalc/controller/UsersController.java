@@ -2,6 +2,7 @@ package org.gyula.overheadCalc.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.gyula.overheadCalc.entity.A_tenant;
+import org.gyula.overheadCalc.entity.Authorities;
 import org.gyula.overheadCalc.entity.Users;
 import org.gyula.overheadCalc.service.AuthoritiesService;
 import org.gyula.overheadCalc.service.TenantService;
@@ -50,20 +51,38 @@ public class UsersController {
     @GetMapping("/addUser")
     public String addUser(Model model) {
         Users newUser = new Users();
+        Authorities newAuthorities = null;
+        newUser.setAuthorities(newAuthorities);
         model.addAttribute("roleList", roleList);
         model.addAttribute("userName", getAuthUserName());
-        model.addAttribute("user", newUser);
+        model.addAttribute("newUser", newUser);
         model.addAttribute("tenantList", tenantService.findAll());
         log.info("Adding new user data, calling the form page");
         return "userTemplate/user-form";
     }
 
+    @GetMapping("user-error")
+    public String userError(@RequestParam("errorList") BindingResult bindingResult, Model model) {
+        model.addAttribute("errorList", bindingResult.getAllErrors());
+        model.addAttribute("username", getAuthUserName());
+        return "userTemplate/user-error";
+    }
+
     @PostMapping("/saveUser")
-    public String saveUser(@ModelAttribute("username") @Valid Users newUser, Model model, BindingResult bindingResult) {
+    public String saveUser(@Valid @ModelAttribute("newUser") Users newUser, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            userError(bindingResult, model);
+            return "userTemplate/user-error";
+        }
+        if (usersService.findByUserName(newUser.getUsername()) != null ) {
+            bindingResult.rejectValue("username", "error.username", "This username has been taken already!");
+            userError(bindingResult, model);
+            return "userTemplate/user-error";
+        }
         A_tenant newTenant = null;
         newUser.setPassword("{bcrypt}" + passwordEncoder.encode(newUser.getPassword()));
         newUser.getAuthorities().setUsername(newUser.getUsername());
-        // if I do not add tenant (actually add dummy tenant, I want to keep the tenant field empty
+        // if I do not add tenant (actually I add a dummy tenant anyway), I want to keep the tenant field empty
         // otherwise I would have several 1 ids in the tenant_id column, but it's a OneToOne connection
         if (newUser.getTenant().getId() == 1) {
             newTenant= null;
@@ -71,9 +90,6 @@ public class UsersController {
             newTenant = tenantService.findById(newUser.getTenant().getId());
         }
         newUser.setTenant(newTenant);
-        if (bindingResult.hasErrors()) {
-            return "home";
-        }
         usersService.save(newUser);
         model.addAttribute("userName", getAuthUserName());
         model.addAttribute("userList", usersService.findAll());
