@@ -41,7 +41,6 @@ public class OverheadsController {
         this.usersService = usersService;
         this.overheadsRecordingService = overheadsRecordingService;
         this.pdfService = pdfService;
-//        this.gasService = gasService;
     }
 
     @GetMapping("/home")
@@ -49,8 +48,6 @@ public class OverheadsController {
         Users loggedUser = usersService.findByUserName(getAuthUserName());
         model.addAttribute("loggedTenant", loggedUser.getTenant());
         log.info("home page called");
-//        A_gas_meter newGas = new A_gas_meter(110000);
-//        gasService.save(newGas);
         model.addAttribute("myUser", user);
         return "me/home";
     }
@@ -87,8 +84,6 @@ public class OverheadsController {
             overheadsError(bindingResult, model);
             return "me/overheads-error";
         }
-        // need to add the original flat id in a complicated way, first get the id, as I do not put it into the model
-//        int flatId = usersService.findByUserName(getAuthUserName()).getTenant().getFlats().get(0).getId();
         // need to add a new empty flat to the A_gas_meter instance and then add the id
         gasMeter.setA_flat(new A_flat());
         gasMeter.getA_flat().setId(flatId());
@@ -127,8 +122,6 @@ public class OverheadsController {
             return "me/overheads-error";
         }
 
-        // need to add the original flat id in a complicated way, first get the id, as I do not put it into the model
-//        int flatId = usersService.findByUserName(getAuthUserName()).getTenant().getFlats().get(0).getId();
         // need to add a new empty flat to the A_gas_meter instance and then add the id
         electricityMeter.setA_flat(new A_flat());
         electricityMeter.getA_flat().setId(flatId());
@@ -167,12 +160,10 @@ public class OverheadsController {
             overheadsError(bindingResult, model);
             return "me/overheads-error";
         }
-        // need to add the original flat id in a complicated way, first get the id, as I do not put it into the model
-//        int flatId = usersService.findByUserName(getAuthUserName()).getTenant().getFlats().get(0).getId();
         // need to add a new empty flat to the A_gas_meter instance and then add the id
         waterMeter.setA_flat(new A_flat());
         waterMeter.getA_flat().setId(flatId());
-        // now I can save the new gas record
+        // now I can save the new water record
         overheadsRecordingService.saveActualWater(waterMeter);
         model.addAttribute("userName", getAuthUserName());
         log.info("Saved the new water meter " + waterMeter.getWater_meter());
@@ -183,7 +174,6 @@ public class OverheadsController {
     @GetMapping("/invoice")
     public String printInvoice(Model model) {
         Invoice invoiceData = new Invoice();
-//        invoiceData = invoiceData.createInvoiceData(usersService.findByUserName(getAuthUserName()).getTenant().getFlats().get(0));
         model.addAttribute("invoiceData", invoiceData.createInvoiceData(usersService.findByUserName(getAuthUserName()).getTenant().getFlats().get(0)));
         model.addAttribute("userName", getAuthUserName());
         log.info("Invoice data created for the flat: " + invoiceData.getAddress());
@@ -193,7 +183,6 @@ public class OverheadsController {
     @GetMapping("/download-pdf")
     public void downloadPDFResource(HttpServletResponse response) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy_MM_dd HH-mm");
-
         try {
             Path file = Paths.get(pdfService.generatePdf(flatId()).getAbsolutePath());
             if (Files.exists(file)) {

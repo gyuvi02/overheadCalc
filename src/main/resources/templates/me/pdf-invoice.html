@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<link href="data:image/x-icon;" rel="shortcut icon" />
+<head>
+<!--    <meta charset="UTF-8">-->
+    <title>Invoice</title>
+
+    <!-- Reference CSS file -->
+<!--    For some reason I cannot use th:href (here and for buttons) when I use it for pdf this way-->
+    <link href="/static/css/strap.css" rel="stylesheet" />
+<!--    <link rel="stylesheet" type="text/css" th:href="@{/css/strap.css}">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1">-->
+<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">-->
+
+
+</head>
+<body class="d-flex flex-column justify-content-between text-center" >
+
+<br></br>
+<br></br>
+<br></br>
+<div class="container" style="padding-top: 50px">
+    <h2 style="text-align: center; ">Invoice</h2>
+<br></br>
+    <table class="table table-bordered table-striped" style="width: 750px; margin-left:auto;margin-right:auto">
+        <colgroup>
+            <col style="width:30%"></col>
+            <col style="width:28%"></col>
+            <col style="width:42%"></col>
+        </colgroup>
+
+        <tr style="font-size: 14px">
+            <th >Flat address</th>
+            <td colspan="2" th:text="${invoice.address}" ></td>
+        </tr>
+        <tr style="font-size: 14px">
+            <th>Tenant name</th>
+            <td colspan="2" th:text="${invoice.tenantLastName} + ', ' + ${invoice.tenantFirstName}"></td>
+        </tr >
+        <tr style="font-size: 14px">
+            <th>Monthly rent</th>
+            <td colspan="2" th:text="${invoice.rent} + ' HUF'"></td>
+        </tr>
+        <tr style="font-size: 14px">
+            <th>Associate fee</th>
+            <td colspan="2" th:text="${invoice.associateFee} + ' HUF'"></td>
+        </tr>
+        <br></br>
+
+        <tr style="font-size: 14px">
+            <th colspan="3">Gas</th>
+        </tr>
+        <tr style="font-size: 14px">
+                <td th:text="'Actual: ' + ${invoice.gasMeterLatest} + 'm3'"></td>
+                <td th:text="'Previous: ' + ${invoice.gasMeterBeforeLatest} + 'm3'"></td>
+                <td th:text="'Consumption: ' + ${invoice.gasConsumption} + 'm3'" style="font-weight: bold"></td>
+        </tr>
+        <tr style="font-size: 14px">
+            <td th:text="'Unit price/m3: ' + ${invoice.gasUnitPrice} + ' HUF' "></td>
+            <td th:text="'Basic price: ' + ${invoice.gasBasicPrice} + ' HUF'"></td>
+            <td th:text="'Gas price to pay: ' + ${invoice.gasToPay} +' HUF'" style="font-weight: bolder"></td>
+        </tr>
+        <br></br>
+
+        <tr style="font-size: 14px">
+            <th colspan="3">Electricity</th>
+        </tr>
+        <tr style="font-size: 14px">
+            <td th:text="'Actual: ' + ${invoice.electricityMeterLatest} + 'KWH'"></td>
+            <td th:text="'Previous: ' + ${invoice.electricityMeterBeforeLatest} + 'KWH'"></td>
+            <td th:text="'Consumption: ' + ${invoice.electricityConsumption} + 'KWH'" style="font-weight: bold"></td>
+        </tr>
+        <tr style="font-size: 14px">
+            <td th:text="'Unit price/KWH: ' + ${invoice.electricityUnitPrice} + ' HUF'"></td>
+            <td th:text="'Basic price: ' + ${invoice.electricityBasicPrice} + ' HUF' "></td>
+            <td th:text="'Electricity price to pay: ' + ${invoice.electricityToPay} + ' HUF'" style="font-weight: bolder"></td>
+        </tr>
+        <br></br>
+
+        <tr style="font-size: 14px">
+            <th colspan="3">Water</th>
+        </tr>
+
+        <tr style="font-size: 14px">
+                <td th:text="'Actual: ' + ${invoice.waterMeterLatest} + 'm3'"></td>
+                <td th:text="'Previous: ' + ${invoice.waterMeterBeforeLatest} + 'm3'"></td>
+                <td th:text="'Consumption: ' + ${invoice.waterConsumption} + 'm3'" style="font-weight: bold"></td>
+        </tr>
+        <tr style="font-size: 14px">
+            <td th:text="'Unit price/m3: ' + ${invoice.waterUnitPrice} + ' HUF'"></td>
+            <td th:text="'Basic price: ' + ${invoice.waterBasicPrice} + ' HUF'"></td>
+            <td th:text="'Water price to pay: ' + ${invoice.waterToPay} + ' HUF'" style="font-weight: bolder"></td>
+        </tr>
+        <br></br>
+        <tr style="font-weight: bolder; font-size: 16px; font-style: italic">
+            <th>Total amount</th>
+            <td colspan="2" th:text="${invoice.totalSum} + ' HUF'"></td>
+        </tr>
+
+    </table>
+    <br></br>
+    <br></br>
+    <h5 th:text="${'Debrecen, ' + #temporals.format(invoice.getLocalDateTime(), 'YYYY-MM-dd') }" style="text-align: center"></h5>
+    <br></br>
+
+</div>
+
+</body>
+</html>
