@@ -1,10 +1,13 @@
 package org.gyula.overheadCalc.controller;
 
+import com.lowagie.text.DocumentException;
 import lombok.extern.slf4j.Slf4j;
 import org.gyula.overheadCalc.entity.*;
 import org.gyula.overheadCalc.service.OverheadsRecordingService;
+import org.gyula.overheadCalc.service.PdfService;
 import org.gyula.overheadCalc.service.UsersService;
 import org.gyula.overheadCalc.util.Invoice;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,7 +17,14 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Slf4j
@@ -24,10 +34,13 @@ public class OverheadsController {
 
     UsersService usersService;
     OverheadsRecordingService overheadsRecordingService;
+    PdfService pdfService;
 
-    public OverheadsController(UsersService usersService, OverheadsRecordingService overheadsRecordingService) {
+    @Autowired
+    public OverheadsController(UsersService usersService, OverheadsRecordingService overheadsRecordingService, PdfService pdfService) {
         this.usersService = usersService;
         this.overheadsRecordingService = overheadsRecordingService;
+        this.pdfService = pdfService;
 //        this.gasService = gasService;
     }
 
@@ -177,6 +190,24 @@ public class OverheadsController {
         return "/me/invoice";
     }
 
+    @GetMapping("/download-pdf")
+    public void downloadPDFResource(HttpServletResponse response) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy_MM_dd HH-mm");
+
+        try {
+            Path file = Paths.get(pdfService.generatePdf(flatId()).getAbsolutePath());
+            if (Files.exists(file)) {
+                response.setContentType("application/pdf");
+                response.addHeader("Content-Disposition",
+                        "attachment; filename=" + "Invoice_" + LocalDateTime.now().format(formatter) + ".pdf");
+                Files.copy(file, response.getOutputStream());
+                response.getOutputStream().flush();
+            }
+        } catch (DocumentException | IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
     private String getAuthUserName() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return authentication.getName();
@@ -185,6 +216,5 @@ public class OverheadsController {
     private int flatId() {
         return usersService.findByUserName(getAuthUserName()).getTenant().getFlats().get(0).getId();
     }
-
 
 }

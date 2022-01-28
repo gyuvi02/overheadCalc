@@ -10,6 +10,7 @@ import org.gyula.overheadCalc.entity.A_water_meter;
 import org.gyula.overheadCalc.service.FlatService;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -154,6 +155,12 @@ public class Invoice {
                 electricityConsumption, electricityUnitPrice, electricityToPay, electricityBasicPrice, waterMeterLast,
                 waterMeterBeforeLast, waterConsumption, waterUnitPrice, waterToPay, waterBasicPrice, rent, associateFee,
                 totalSum);
+    }
+
+    public List<Invoice> createInvoiceList(Invoice invoice) {
+        List<Invoice> newList = new ArrayList<>();
+        newList.add(invoice);
+        return newList;
     }
 
 

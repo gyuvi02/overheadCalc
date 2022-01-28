@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <link href="data:image/x-icon;" rel="shortcut icon" />
 <head>
-    <meta charset="UTF-8">
+<!--    <meta charset="UTF-8">-->
     <title>Invoice</title>
 
     <!-- Reference CSS file -->
@@ -94,7 +94,10 @@
     <br>
     <a th:text="${'Debrecen, ' + #temporals.format(invoiceData.getLocalDateTime(), 'YYYY-MM-dd') }"></a>
     <br>
-    <br>
+    <a th:href="@{/me/download-pdf}" class="btn btn-primary" style="margin-bottom: 20px; margin-top: 20px">
+        Create PDF
+    </a>
+
 
 </div>
 
