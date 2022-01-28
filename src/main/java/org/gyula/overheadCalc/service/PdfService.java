@@ -40,7 +40,7 @@ public class PdfService {
         File file = File.createTempFile("invoice", ".pdf");
         OutputStream outputStream = new FileOutputStream(file);
         ITextRenderer renderer = new ITextRenderer(20f * 4f / 3f, 20);
-        renderer.setDocumentFromString(html, new ClassPathResource(PDF_RESOURCES).getURL().toExternalForm());
+        renderer.setDocumentFromString(html, new ClassPathResource(PDF_RESOURCES).getURL().toExternalForm()); //this is missing on Github
         renderer.layout();
         renderer.createPDF(outputStream);
         outputStream.close();
